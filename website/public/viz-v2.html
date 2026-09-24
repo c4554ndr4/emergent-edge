@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emergent Edge-Case AI Use Detector | Case Cards</title>
+    <link rel="stylesheet" href="./viz.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Emergent Edge-Case AI Use Detector</h1>
+          <p>Semantic map of curated case cards. Pattern stars sit at the center of the case clusters they currently represent.</p>
+        </div>
+        <div class="top-actions">
+          <a class="btn" href="./index-v2.html">Home</a>
+          <a class="btn" href="./pipeline-v2.html">Pipeline Demo</a>
+          <a class="btn" href="./viz-v2.html">Case Cards</a>
+          <a class="btn" href="./viz.html">Current Map</a>
+        </div>
+      </header>
+
+      <section class="metrics" id="metrics"></section>
+
+      <section class="layout">
+        <article class="panel chart-panel">
+          <div class="panel-head">
+            <h2>Case Cards</h2>
+            <div class="panel-actions">
+              <label>
+                Color by
+                <select id="colorBy">
+                  <option value="pattern">Assigned Pattern</option>
+                  <option value="liability">Major Liability</option>
+                </select>
+              </label>
+              <label>
+                <input id="showPatterns" type="checkbox" checked />
+                Show pattern cards
+              </label>
+              <button id="resetZoomBtn" class="btn small-btn">Reset View</button>
+            </div>
+          </div>
+          <svg id="caseSvg" viewBox="0 0 980 560"></svg>
+        </article>
+
+        <aside class="panel detail-panel" id="detailPanel">
+          <div class="empty">Click a case to inspect the case card and linked pattern.</div>
+        </aside>
+      </section>
+
+      <section class="panel legend-panel" id="mapGuide"></section>
+    </div>
+
+    <script src="./viz-v2.js"></script>
+  </body>
+</html>

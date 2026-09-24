@@ -4,7 +4,7 @@ My github projects are presented with AI-assisted writing that I've reviewed. If
 
 # Emergent Edge
 
-**[Explore the live site](https://emergent-edge-case-ai-use-detector.vercel.app)** · Browse 51 edited research summaries by topic, search, and open a case card.
+**[Explore the case clusters](https://emergent-edge-case-ai-use-detector.vercel.app/viz-v2.html)** · [Interactive sample flow](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline.html) · [Daily-run walkthrough](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline-v2.html)
 
 **An evidence-based research pipeline for edge-case user behavior in AI interactions.**
 
@@ -12,9 +12,11 @@ When people use an AI system in an unexpected way, a familiar label can hide wha
 
 The unit of analysis is the interaction: what someone asked for, how the system responded, and what consequences the source reports. Uncommon language, attachment, or community membership does not establish harm. The pipeline supports review of edge-case behavior; it does not diagnose or rank people.
 
-## Browse the collection
+## Explore the original site
 
-The [case browser](https://emergent-edge-case-ai-use-detector.vercel.app) brings back an earlier research collection as searchable, organized cards. Each card separates a reported interaction, a possible mechanism, and the limits of its source. The 51 entries include overlapping accounts, technical reports, and commentary; they are not 51 independently verified incidents. Names, quotations, source links, and identifying details have been removed.
+The site retains the original interactive sample flow and semantic maps. The [expanded map](https://emergent-edge-case-ai-use-detector.vercel.app/viz-v2.html) places 51 case cards in semantic space, with 10 pattern stars at their cluster centers. Select a case to inspect its evidence and linked pattern, change the coloring, or pan and zoom. The [sample flow](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline.html) lets you inspect recorded inputs, prompts, and outputs stage by stage.
+
+The layout, coordinates, and assignments are preserved from the original site. Provider and product references have been omitted. These are recorded research artifacts, not a live evaluation or independently verified incident count.
 
 ## Follow one report through the system
 
@@ -34,7 +36,7 @@ Each run produces case cards, novelty decisions, and pattern proposals. The judg
 
 The architecture separates evidence extraction, retrieval, model judgment, and policy so each can be evaluated and improved independently. Reports can be processed concurrently, while saved artifacts retain the reasoning needed for later review.
 
-The pipeline examples are fictional and include an offline demonstration. The website separately presents edited summaries from the earlier research collection; its topic labels are editorial groupings, not outputs of that demonstration. The offline model and embedding fixtures exercise the workflow; their outputs are **not measurements of model quality**. Live analysis requires explicitly configured endpoints and models. Optional source-origin and relevance gates are disabled by default because they can exclude useful reports or introduce unsupported assumptions.
+The pipeline examples are fictional and include an offline demonstration. The website separately preserves the original recorded sample flows, case cards, and pattern assignments; it is not a rendering of the fictional offline demonstration. The offline model and embedding fixtures exercise the workflow; their outputs are **not measurements of model quality**. Live analysis requires explicitly configured endpoints and models. Optional source-origin and relevance gates are disabled by default because they can exclude useful reports or introduce unsupported assumptions.
 
 ## What I would improve next
 

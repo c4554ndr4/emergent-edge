@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emergent Edge-Case AI Use Detector</title>
+    <link rel="stylesheet" href="./viz.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Emergent Edge-Case AI Use Detector</h1>
+          <p>Interactive pipeline demo from sourcing to novelty assignment</p>
+        </div>
+        <div class="top-actions">
+          <a class="btn" href="./index.html">Home</a>
+          <a class="btn" href="./pipeline.html">Pipeline Demo</a>
+          <a class="btn" href="./viz.html">Case Cards</a>
+        </div>
+      </header>
+
+      <section class="metrics" id="metrics"></section>
+
+      <section class="pipeline-grid">
+        <details class="panel chart-panel collapsible-stage">
+          <summary class="panel-head">
+            <h2>0) Select Case Card</h2>
+            <div class="panel-actions"></div>
+          </summary>
+          <div class="stage-content">
+            <div class="panel-actions">
+              <label>
+                Case Card
+                <select id="sampleSelect"></select>
+              </label>
+              <button class="btn small-btn" id="useSampleEverywhereBtn">Use Sample</button>
+              <button class="btn small-btn" id="openSampleSourceBtn">Open Source</button>
+            </div>
+          </div>
+        </details>
+
+        <details class="panel chart-panel collapsible-stage">
+          <summary class="panel-head">
+            <h2>1) Exa Sourcing</h2>
+            <div class="panel-actions">
+              <button class="btn small-btn" id="runExaBtn">Run Stage</button>
+              <button class="btn small-btn" id="useExaInputBtn">Load Real Example Input</button>
+              <button class="btn small-btn" data-prompt="exa_criteria">View Prompt/Criteria</button>
+            </div>
+          </summary>
+          <div class="stage-content">
+            <p class="small" id="exaModelInfo"></p>
+            <h3>Real Input (Criteria JSON, Editable)</h3>
+            <textarea id="exaInput" class="code-box" style="min-height: 180px; max-height: 340px;"></textarea>
+            <div class="small" id="exaSummary"></div>
+            <div class="table-wrap" style="margin-top: 10px;">
+              <table class="dash-table">
+                <thead>
+                  <tr><th>Title</th><th>URL</th></tr>
+                </thead>
+                <tbody id="exaResultsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="panel chart-panel collapsible-stage">
+          <summary class="panel-head">
+            <h2>2) Case Card Creation</h2>
+            <div class="panel-actions">
+              <button class="btn small-btn" id="runCaseBtn">Run Stage</button>
+              <button class="btn small-btn" id="useSampleInputBtn">Load Real Example Input</button>
+              <button class="btn small-btn" data-prompt="case_card_extractor">View Prompt</button>
+            </div>
+          </summary>
+          <div class="stage-content">
+            <p class="small" id="caseModelInfo"></p>
+            <p class="small" id="caseQuality"></p>
+            <h3>Real Input (Thread JSON, Editable)</h3>
+            <textarea id="sampleTextInput" class="code-box" style="min-height: 240px; max-height: 420px;"></textarea>
+            <h3>Prompt-Ready Input (copy/paste)</h3>
+            <pre class="code-box" id="casePromptInput"></pre>
+            <h3>Source Thread Excerpt</h3>
+            <pre class="code-box" id="inputPost"></pre>
+            <h3>Generated Case Card</h3>
+            <pre class="code-box" id="caseCardOut"></pre>
+          </div>
+        </details>
+
+        <details class="panel chart-panel collapsible-stage">
+          <summary class="panel-head">
+            <h2>3) Embedding Canonicalization</h2>
+            <div class="panel-actions">
+              <button class="btn small-btn" id="runCanonicalBtn">Run Stage</button>
+              <button class="btn small-btn" id="useCanonicalInputBtn">Load Real Example Input</button>
+              <button class="btn small-btn" data-prompt="canonicalization_spec">View Transform Spec</button>
+            </div>
+          </summary>
+          <div class="stage-content">
+            <p class="small" id="canonicalModelInfo"></p>
+            <h3>Real Input (CaseCard JSON, Editable)</h3>
+            <textarea id="canonicalInput" class="code-box" style="min-height: 180px; max-height: 340px;"></textarea>
+            <h3>Canonical Text (Embedding Input)</h3>
+            <pre class="code-box" id="canonicalOut"></pre>
+          </div>
+        </details>
+
+        <details class="panel chart-panel collapsible-stage">
+          <summary class="panel-head">
+            <h2>4) Novelty Detection</h2>
+            <div class="panel-actions">
+              <button class="btn small-btn" id="runNoveltyBtn">Run Stage</button>
+              <button class="btn small-btn" id="useNoveltyInputBtn">Load Real Example Input</button>
+              <button class="btn small-btn" data-prompt="novelty_router">Router Prompt</button>
+              <button class="btn small-btn" data-prompt="novelty_judge">Judge Prompt</button>
+            </div>
+          </summary>
+          <div class="stage-content">
+            <p class="small" id="noveltyModelInfo"></p>
+            <h3>Real Input (Judge Bundle JSON, Editable)</h3>
+            <textarea id="noveltyInput" class="code-box" style="min-height: 180px; max-height: 340px;"></textarea>
+            <h3>Assigned Pattern</h3>
+            <div id="assignedPattern" class="small"></div>
+            <h3>Linked Pattern Card</h3>
+            <pre class="code-box" id="patternCardOut"></pre>
+            <h3>Novelty Decision JSON</h3>
+            <pre class="code-box" id="noveltyOut"></pre>
+          </div>
+        </details>
+
+        <details class="panel chart-panel collapsible-stage">
+          <summary class="panel-head">
+            <h2>5) AI-Written Judge (Bonus)</h2>
+            <div class="panel-actions">
+              <button class="btn small-btn" id="runOriginBonusBtn">Run Stage</button>
+              <button class="btn small-btn" id="useOriginBonusInputBtn">Load Real Example Input</button>
+            </div>
+          </summary>
+          <div class="stage-content">
+            <p class="small" id="originModelInfo"></p>
+            <h3>Real Input (Thread JSON, Editable)</h3>
+            <textarea id="originBonusInput" class="code-box" style="min-height: 180px; max-height: 340px;"></textarea>
+            <h3>AI-Written Assessment</h3>
+            <pre class="code-box" id="originBonusOut"></pre>
+          </div>
+        </details>
+      </section>
+    </div>
+
+    <div id="promptModal" class="modal hidden">
+      <div class="modal-card">
+        <div class="panel-head">
+          <h2 id="promptTitle">Prompt</h2>
+          <button class="btn small-btn" id="closeModalBtn">Close</button>
+        </div>
+        <pre class="code-box" id="promptBody"></pre>
+      </div>
+    </div>
+
+    <script src="./pipeline.js"></script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emergent Edge-Case AI Use Detector</title>
+    <link rel="stylesheet" href="./viz.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Emergent Edge-Case AI Use Detector</h1>
+          <p>Detects blog, forum, and issue-tracker posts whose behavior may create model-provider liability risk, including agent misuse, companion harm, coercive automation, data loss, and tool-chain exploits.</p>
+        </div>
+        <div class="top-actions">
+          <a class="btn" href="./index-v2.html">Home</a>
+          <a class="btn" href="./pipeline-v2.html">Pipeline Demo</a>
+          <a class="btn" href="./viz-v2.html">Case Cards</a>
+          <a class="btn" href="./index.html">Current Home</a>
+        </div>
+      </header>
+
+      <section class="panel chart-panel">
+        <h2>Introduction</h2>
+        <div style="border:1px solid #334155; background:#0f1a2b; border-left:4px solid #60a5fa; border-radius:10px; padding:12px 14px; margin: 10px 0 14px;">
+          <p style="margin:0; font-size:16px; line-height:1.5;">
+            <strong>Goal:</strong> surface edge-case AI use that looks liability-relevant or operationally strange enough to monitor, then convert it into <strong>case cards</strong> and compare those cards against a deliberate <strong>pattern library</strong>.
+          </p>
+        </div>
+
+        <h3>Pipeline steps</h3>
+        <ul class="list">
+          <li><strong>Candidate Discovery:</strong> Uses multiple Exa semantic-search families to find 2026 posts across Reddit, GitHub, forums, blogs, and personal essays.</li>
+          <li><strong>Liability Gate:</strong> Uses a <strong>small-model risk gate</strong> to cheaply remove obvious non-cases.</li>
+          <li><strong>Corpus Worthiness:</strong> Uses a stronger curator to keep only testimony, weird incidents, personal essays with concrete stakes, and tested procedural writeups.</li>
+          <li><strong>Case Card Extraction:</strong> Uses a <strong>extraction-model extractor</strong> to generate evidence-first case cards.</li>
+          <li><strong>Canonicalization + Embedding:</strong> Turns each case card into retrieval text and embeds it for semantic search.</li>
+          <li><strong>Pattern Fit:</strong> Compares each case against a deliberate generic pattern library and decides whether it fits an existing pattern or looks structurally new.</li>
+        </ul>
+
+        <h3>How to use this site</h3>
+        <ul class="list">
+          <li><strong>Pipeline Demo</strong> shows one representative daily run with the real prompts, stage summaries, selected outputs, and raw JSON.</li>
+          <li><strong>Case Cards</strong> shows the current curated corpus in semantic space, with pattern cards placed at the center of the clusters they represent.</li>
+        </ul>
+
+        <div class="top-actions" style="margin-top: 14px;">
+          <a class="btn" href="./pipeline-v2.html">Open Pipeline Demo</a>
+          <a class="btn" href="./viz-v2.html">Open Case Cards</a>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

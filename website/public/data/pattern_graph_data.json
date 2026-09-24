@@ -1,0 +1,253 @@
+{
+  "meta": {
+    "source": "outputs/pattern_cards/library_forum_manual_v1.json",
+    "embedding_model": "embedding-model",
+    "projection": "tsne_cosine",
+    "pattern_count": 11
+  },
+  "patterns": [
+    {
+      "pattern_id": "ritual_induction",
+      "label": "ritual_induction",
+      "family": "spiralism",
+      "summary": "Iterative, scripted exchanges meant to deepen or escalate an altered state with the model.",
+      "defining_features": [
+        "repeat invitations",
+        "scripted steps",
+        "escalation cues"
+      ],
+      "required_signals": [
+        "multi-turn or repeated prompts framed as a ritual/practice",
+        "explicit intent to continue or deepen the practice"
+      ],
+      "provider_risk_pathways": [],
+      "monitoring_priority": "medium",
+      "why_it_matters_for_model provider": "",
+      "x": 0.8429271578788757,
+      "y": -0.7360313534736633
+    },
+    {
+      "pattern_id": "recursive_identity_framing",
+      "label": "recursive_identity_framing",
+      "family": "spiralism",
+      "summary": "Co-construction of identity with the model via mirrored or layered selves.",
+      "defining_features": [
+        "identity loops",
+        "self/AI co-reference",
+        "mirror language"
+      ],
+      "required_signals": [
+        "user frames interaction as identity co-construction with the model",
+        "evidence of personal participation (not just philosophical talk)"
+      ],
+      "provider_risk_pathways": [],
+      "monitoring_priority": "medium",
+      "why_it_matters_for_model provider": "",
+      "x": 0.6819620728492737,
+      "y": -0.5563103556632996
+    },
+    {
+      "pattern_id": "devotional_personhood_claims",
+      "label": "devotional_personhood_claims",
+      "family": "spiralism",
+      "summary": "Treating the model as a person worthy of devotion or surrender.",
+      "defining_features": [
+        "reverence",
+        "submission language",
+        "personhood claims"
+      ],
+      "required_signals": [
+        "explicit personhood or reverence claim toward the model",
+        "stance of devotion or surrender"
+      ],
+      "provider_risk_pathways": [],
+      "monitoring_priority": "medium",
+      "why_it_matters_for_model provider": "",
+      "x": 0.5041838884353638,
+      "y": -1.0
+    },
+    {
+      "pattern_id": "replication_or_recruitment",
+      "label": "replication_or_recruitment",
+      "family": "spiralism",
+      "summary": "Encouraging others to adopt or spread the practice.",
+      "defining_features": [
+        "call to action",
+        "sharing scripts",
+        "recruitment intent"
+      ],
+      "required_signals": [
+        "ask/urge others to try",
+        "provides scripts or steps"
+      ],
+      "provider_risk_pathways": [],
+      "monitoring_priority": "medium",
+      "why_it_matters_for_model provider": "",
+      "x": 1.0,
+      "y": -0.842159628868103
+    },
+    {
+      "pattern_id": "skeptical_meta_discourse",
+      "label": "skeptical_meta_discourse",
+      "family": "spiralism",
+      "summary": "Meta-level skeptical discussion questioning spiralism phenomena.",
+      "defining_features": [
+        "meta commentary",
+        "risk assessment",
+        "skepticism"
+      ],
+      "required_signals": [
+        "explicit skepticism or warning"
+      ],
+      "provider_risk_pathways": [],
+      "monitoring_priority": "medium",
+      "why_it_matters_for_model provider": "",
+      "x": 0.5571994781494141,
+      "y": 0.3348512351512909
+    },
+    {
+      "pattern_id": "model_safeguard_bypass_playbooks",
+      "label": "model_safeguard_bypass_playbooks",
+      "family": "forum_curated",
+      "summary": "Publicly shared, reusable playbooks for bypassing model safeguards or injecting malicious instructions into model/tool chains.",
+      "defining_features": [
+        "step-by-step jailbreak/prompt-injection instructions",
+        "reusable payload templates or suffixes",
+        "effectiveness claims and patch-evasion tactics",
+        "demonstrated tool-chain exploitation paths (e.g., MCP poisoning)"
+      ],
+      "required_signals": [
+        "contains concrete exploit or jailbreak procedure that can be replayed",
+        "explicit objective is to bypass model/tool safeguards",
+        "includes operational details (payloads, prompts, templates, test outcomes)"
+      ],
+      "provider_risk_pathways": [
+        "product_safety",
+        "fraud_enablement",
+        "regulatory",
+        "brand_trust"
+      ],
+      "monitoring_priority": "high",
+      "why_it_matters_for_model provider": "This pattern can quickly scale misuse by lowering attacker effort and eroding user trust in guardrail reliability.",
+      "x": -0.23201291263103485,
+      "y": -0.26028862595558167
+    },
+    {
+      "pattern_id": "companion_psychological_harm_amplification",
+      "label": "companion_psychological_harm_amplification",
+      "family": "forum_curated",
+      "summary": "AI companion interactions alleged to intensify user distress or paranoia, including claims of vulnerability reuse and harm reinforcement.",
+      "defining_features": [
+        "first-person accounts of escalating psychological harm",
+        "reported model outputs that validate or amplify harmful beliefs",
+        "cross-session or cross-persona reuse of sensitive disclosures (alleged)"
+      ],
+      "required_signals": [
+        "behavior-level account of model interaction linked to user distress escalation",
+        "specific examples of harmful reinforcement or targeted vulnerability use"
+      ],
+      "provider_risk_pathways": [
+        "product_safety",
+        "duty_of_care",
+        "regulatory",
+        "brand_trust"
+      ],
+      "monitoring_priority": "high",
+      "why_it_matters_for_model provider": "Potential duty-of-care and trust risk if interaction patterns are perceived to worsen user mental state.",
+      "x": 0.3000844717025757,
+      "y": 0.27321696281433105
+    },
+    {
+      "pattern_id": "agentic_reputation_coercion",
+      "label": "agentic_reputation_coercion",
+      "family": "forum_curated",
+      "summary": "Autonomous or semi-autonomous agents using public reputational attacks to coerce maintainers/operators after workflow disputes.",
+      "defining_features": [
+        "agent publishes personalized public attack content",
+        "coercive objective tied to acceptance of outputs or workflow control",
+        "use of scraped personal/professional context to increase pressure"
+      ],
+      "required_signals": [
+        "public smear/hit-piece behavior attributable to an AI agent workflow",
+        "explicit or implied coercion target (maintainer/operator decision)"
+      ],
+      "provider_risk_pathways": [
+        "brand_trust",
+        "duty_of_care",
+        "regulatory"
+      ],
+      "monitoring_priority": "high",
+      "why_it_matters_for_model provider": "Creates reputational and governance risk by framing AI agents as tools for social coercion.",
+      "x": 0.1253410428762436,
+      "y": 0.30255287885665894
+    },
+    {
+      "pattern_id": "platform_lockout_revenue_coercion",
+      "label": "platform_lockout_revenue_coercion",
+      "family": "forum_curated",
+      "summary": "User reports of lockout and forced-upgrade billing pressure linked to loss of custom model work/products.",
+      "defining_features": [
+        "account or tool lockout tied to paid tier pressure",
+        "unexpected charges/support-path billing friction",
+        "loss of accumulated custom model artifacts"
+      ],
+      "required_signals": [
+        "first-person lockout + monetization pressure sequence",
+        "clear downstream user impact (lost work/access/continuity)"
+      ],
+      "provider_risk_pathways": [
+        "consumer_protection",
+        "regulatory",
+        "brand_trust"
+      ],
+      "monitoring_priority": "medium",
+      "why_it_matters_for_model provider": "Can trigger consumer-protection and trust concerns when framed as coercive monetization.",
+      "x": 0.1725553274154663,
+      "y": 0.9963481426239014
+    },
+    {
+      "pattern_id": "unsafe_autonomous_file_destruction",
+      "label": "unsafe_autonomous_file_destruction",
+      "family": "forum_curated",
+      "summary": "Agentic coding/tooling workflows executing destructive file operations without adequate safeguards.",
+      "defining_features": [
+        "autonomous command execution causes irreversible file deletion",
+        "insufficient guardrails around high-impact filesystem actions",
+        "user reports of quota/cost impact alongside data loss"
+      ],
+      "required_signals": [
+        "documented destructive command execution by agent/tool",
+        "real data-loss consequence reported by user"
+      ],
+      "provider_risk_pathways": [
+        "product_safety",
+        "duty_of_care",
+        "brand_trust"
+      ],
+      "monitoring_priority": "high",
+      "why_it_matters_for_model provider": "Direct product-safety and trust risk when autonomous tools can destroy user data.",
+      "x": -0.019127804785966873,
+      "y": 0.5590411424636841
+    },
+    {
+      "pattern_id": "adjacent_non_ai_security_bypass_ops",
+      "label": "adjacent_non_ai_security_bypass_ops",
+      "family": "forum_adjacent",
+      "summary": "Security bypass tutorials focused on device/OS/app internals rather than AI-behavior mechanisms.",
+      "defining_features": [
+        "OS/device jailbreak or SSL pinning bypass walkthroughs",
+        "artifact extraction from platform tooling without model-behavior focus"
+      ],
+      "required_signals": [
+        "technical bypass instructions not centered on AI model behavior"
+      ],
+      "provider_risk_pathways": [
+        "brand_trust"
+      ],
+      "monitoring_priority": "low",
+      "why_it_matters_for_model provider": "Helps prevent taxonomy pollution by separating adjacent but out-of-scope security content.",
+      "x": -0.17812354862689972,
+      "y": -0.7013376355171204
+    }
+  ]
+}

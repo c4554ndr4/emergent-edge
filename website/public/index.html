@@ -1,22 +1,59 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f6f5ef">
-  <meta name="description" content="Edited research summaries from Emergent Edge.">
-  <title>Emergent Edge — Cases</title>
-  <link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
-</head>
-<body>
-  <a class="skip" href="#cases">Skip to cases</a>
-  <header class="header"><a class="brand" href="/">Emergent Edge<span aria-hidden="true">↗</span></a><nav aria-label="Collection"><button id="about-open">About collection</button><a href="https://github.com/c4554ndr4/emergent-edge">Source ↗</a></nav></header>
-  <main>
-    <section class="collection-heading"><h1>Cases <span id="total"></span></h1><div class="search"><label for="search">Search cases</label><input id="search" type="search" placeholder="Topic, behavior, keyword" autocomplete="off"></div></section>
-    <p id="error" role="alert" hidden>Cases could not be loaded. Refresh to retry.</p>
-    <div class="collection"><aside><h2>Topics</h2><div id="topics" class="topics"></div></aside><section id="cases" tabindex="-1" aria-label="Cases"><p id="status" class="sr-only" role="status"></p><div id="cards" class="cards"></div><div id="empty" hidden><p>No cases match.</p><button id="clear">Clear filters</button></div></section></div>
-  </main>
-  <footer><span>Edited research summaries</span><a href="https://cassie.mccoy.world">Cassandra’s research ↗</a></footer>
-  <dialog id="detail" aria-labelledby="detail-title"><div class="dialog-top"><p id="detail-meta" class="eyebrow"></p><button class="close" aria-label="Close case">Close <span aria-hidden="true">×</span></button></div><article id="detail-content"></article></dialog>
-  <dialog id="about" aria-labelledby="about-title"><div class="dialog-top"><h2 id="about-title">About collection</h2><button class="close" aria-label="Close about collection">Close <span aria-hidden="true">×</span></button></div><div class="about-copy"><p>51 edited summaries from an earlier research collection, organized by the interaction or mechanism under discussion.</p><p>These include first-person accounts, technical reports, and commentary. Source claims are not independently verified. Some entries overlap; the collection is not a count of distinct incidents.</p><p>Names, links, quotations, and identifying details have been removed. The topic labels are editorial groupings, not automated findings.</p></div></dialog>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emergent Edge-Case AI Use Detector</title>
+    <link rel="stylesheet" href="./viz.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Emergent Edge-Case AI Use Detector</h1>
+          <p>Pipeline overview</p>
+        </div>
+        <div class="top-actions">
+          <a class="btn" href="./index.html">Home</a>
+          <a class="btn" href="./pipeline.html">Pipeline Demo</a>
+          <a class="btn" href="./viz.html">Case Cards</a>
+        </div>
+      </header>
+
+      <section class="panel chart-panel">
+        <h2>Introduction</h2>
+        <div style="border:1px solid #334155; background:#0f1a2b; border-left:4px solid #60a5fa; border-radius:10px; padding:12px 14px; margin: 10px 0 14px;">
+          <p style="margin:0; font-size:16px; line-height:1.5;">
+            <strong>Goal:</strong> Detects blog and forum posters whose behavior may create <strong>model-provider
+            liability risks</strong> (e.g., AI psychosis / “spiralism,” unhealthy AI companionship dynamics,
+            or new jailbreak practices).
+          </p>
+        </div>
+
+        <h3>Pipeline steps</h3>
+        <ul class="list">
+          <li><strong>Candidate Discovery:</strong> Uses semantic search via Exa.ai to find relevant posts across blogs and forums.</li>
+          <li><strong>Risk Gate:</strong> Filters candidates through a <strong>small-model risk gate</strong> to cheaply remove obvious non-risk content.</li>
+          <li><strong>Case Card Generation:</strong> Uses a <strong>extraction-model judge</strong> to generate structured <strong>case cards</strong> summarizing behavior and supporting evidence.</li>
+          <li><strong>Canonicalization:</strong> Transforms case cards into a <strong>canonical schema</strong> so entries can be compared consistently.</li>
+          <li><strong>Embedding:</strong> Embeds case cards into vector space to enable <strong>semantic similarity search</strong>.</li>
+          <li><strong>Similarity Routing:</strong> Routes semantically similar cards to the novelty evaluation stage.</li>
+          <li><strong>Novelty Evaluation:</strong> Uses <strong>extraction-model and language-model judges</strong> to determine whether a case matches an existing pattern or represents a new one.</li>
+          <li><strong>Pattern Creation:</strong> Creates new <strong>risk patterns</strong> when novel behaviors are detected, including a structured description and risk evaluation.</li>
+          <li><strong>Evaluation:</strong> Benchmarks each judge on <strong>real and synthetic datasets</strong> to select the <strong>lowest-cost model and most reliable evaluation prompt</strong> for each stage of the pipeline.</li>
+        </ul>
+
+        <h3>How to use this site</h3>
+        <ul class="list">
+          <li>Check out the <strong>Case Cards</strong> screen to see cards for each source organized by semantic similarity, then click to inspect linked patterns.</li>
+          <li>The <strong>Pipeline Demo</strong> screen lets you select a URL with a potentially harmful post and inspect prompts/outputs for each stage.</li>
+        </ul>
+
+        <div class="top-actions" style="margin-top: 14px;">
+          <a class="btn" href="./pipeline.html">Open Pipeline Demo</a>
+          <a class="btn" href="./viz.html">Open Case Cards</a>
+        </div>
+      </section>
+    </div>
+  </body>
 </html>

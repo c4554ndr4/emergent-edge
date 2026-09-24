@@ -6,31 +6,27 @@
   "rewrites": [
     {
       "source": "/pipeline",
-      "destination": "/index.html"
+      "destination": "/pipeline.html"
     },
     {
-      "source": "/pipeline.html",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/pipeline-v2.html",
-      "destination": "/index.html"
+      "source": "/pipeline-v2",
+      "destination": "/pipeline-v2.html"
     },
     {
       "source": "/viz",
-      "destination": "/index.html"
+      "destination": "/viz.html"
     },
     {
-      "source": "/viz.html",
-      "destination": "/index.html"
+      "source": "/viz-v2",
+      "destination": "/viz-v2.html"
     },
     {
-      "source": "/viz-v2.html",
-      "destination": "/index.html"
+      "source": "/index-v2",
+      "destination": "/index-v2.html"
     },
     {
-      "source": "/index-v2.html",
-      "destination": "/index.html"
+      "source": "/site/novelty-review/:path*",
+      "destination": "/:path*"
     }
   ],
   "headers": [
@@ -47,9 +43,21 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'"
+          "value": "default-src 'self'; script-src 'self' 'sha256-HeDULTpfM1r7XxYoS4OUN8pbTi25wQBluhf2RG4QphU=' 'sha256-vHX2GiOEkdY/1w/S6gFytflQKvSYfA7nEVCrAjjIzwQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'"
         }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/pipeline-v2-standalone.html",
+      "destination": "/pipeline-v2.html",
+      "permanent": false
+    },
+    {
+      "source": "/viz-v2-standalone.html",
+      "destination": "/viz-v2.html",
+      "permanent": false
     }
   ]
 }
