@@ -1,334 +1,214 @@
-const DATA_URL = "./data/pipeline_demo_data.json";
-
-const els = {
-  metrics: document.getElementById("metrics"),
-  sampleSelect: document.getElementById("sampleSelect"),
-  useSampleEverywhereBtn: document.getElementById("useSampleEverywhereBtn"),
-  openSampleSourceBtn: document.getElementById("openSampleSourceBtn"),
-  exaSummary: document.getElementById("exaSummary"),
-  exaModelInfo: document.getElementById("exaModelInfo"),
-  exaInput: document.getElementById("exaInput"),
-  exaResultsBody: document.getElementById("exaResultsBody"),
-  caseModelInfo: document.getElementById("caseModelInfo"),
-  caseQuality: document.getElementById("caseQuality"),
-  sampleTextInput: document.getElementById("sampleTextInput"),
-  casePromptInput: document.getElementById("casePromptInput"),
-  inputPost: document.getElementById("inputPost"),
-  caseCardOut: document.getElementById("caseCardOut"),
-  canonicalModelInfo: document.getElementById("canonicalModelInfo"),
-  canonicalInput: document.getElementById("canonicalInput"),
-  canonicalOut: document.getElementById("canonicalOut"),
-  noveltyModelInfo: document.getElementById("noveltyModelInfo"),
-  originModelInfo: document.getElementById("originModelInfo"),
-  noveltyInput: document.getElementById("noveltyInput"),
-  originBonusInput: document.getElementById("originBonusInput"),
-  assignedPattern: document.getElementById("assignedPattern"),
-  patternCardOut: document.getElementById("patternCardOut"),
-  noveltyOut: document.getElementById("noveltyOut"),
-  originBonusOut: document.getElementById("originBonusOut"),
-  runExaBtn: document.getElementById("runExaBtn"),
-  useExaInputBtn: document.getElementById("useExaInputBtn"),
-  runCaseBtn: document.getElementById("runCaseBtn"),
-  useSampleInputBtn: document.getElementById("useSampleInputBtn"),
-  runCanonicalBtn: document.getElementById("runCanonicalBtn"),
-  useCanonicalInputBtn: document.getElementById("useCanonicalInputBtn"),
-  runNoveltyBtn: document.getElementById("runNoveltyBtn"),
-  useNoveltyInputBtn: document.getElementById("useNoveltyInputBtn"),
-  runOriginBonusBtn: document.getElementById("runOriginBonusBtn"),
-  useOriginBonusInputBtn: document.getElementById("useOriginBonusInputBtn"),
-  promptModal: document.getElementById("promptModal"),
-  promptTitle: document.getElementById("promptTitle"),
-  promptBody: document.getElementById("promptBody"),
-  closeModalBtn: document.getElementById("closeModalBtn"),
-};
-
-const state = {
-  data: null,
-  selectedCaseId: null,
-};
-
-function pretty(v) {
-  return JSON.stringify(v, null, 2);
-}
-
-function stageReset() {
-  els.exaResultsBody.innerHTML = "";
-  els.exaInput.value = "";
-  els.inputPost.textContent = "";
-  els.sampleTextInput.value = "";
-  els.casePromptInput.textContent = "";
-  els.caseCardOut.textContent = "";
-  els.canonicalInput.value = "";
-  els.canonicalOut.textContent = "";
-  els.noveltyInput.value = "";
-  els.originBonusInput.value = "";
-  els.assignedPattern.innerHTML = "";
-  els.patternCardOut.textContent = "";
-  els.noveltyOut.textContent = "";
-  els.originBonusOut.textContent = "";
-}
-
-function getSample() {
-  return state.data.samples.find((s) => s.case_id === state.selectedCaseId) || state.data.samples[0];
-}
-
-function openSampleSource() {
-  const s = getSample();
-  const url = s?.source_url;
-  if (url) window.open(url, "_blank", "noopener,noreferrer");
-}
-
-function renderMetrics() {
-  const meta = state.data.meta;
-  const cards = [
-    ["Forum Cases", meta.forum_case_count],
-    ["Pattern Cards", meta.pattern_count],
-  ];
-  els.metrics.innerHTML = cards
-    .map(([k, v]) => `<article class="metric"><div class="k">${k}</div><div class="v">${v}</div></article>`)
-    .join("");
-}
-
-function renderStageModelInfo() {
-  const q = state.data.case_card_quality || {};
-  const embeddingModel = state.data.meta?.embedding_model || "embedding-model";
-  const routerModel = state.data.meta?.router_model || "small-model";
-  const judgeModel = state.data.meta?.judge_model || "language-model";
-  const originModel = state.data.meta?.origin_bonus_model || q.origin_model || q.gate_model || "small-model";
-
-  els.exaModelInfo.textContent = "Model: Exa search monitor API (no LLM used in this step).";
-  els.caseModelInfo.textContent = `Models: gate=${q.gate_model || "small-model"}, case-card extractor=${q.casecard_model || "extraction-model"}.`;
-  els.canonicalModelInfo.textContent = `Model: ${embeddingModel} (used for embedding canonical text).`;
-  els.noveltyModelInfo.textContent = `Models: router=${routerModel}, novelty judge=${judgeModel}.`;
-  els.originModelInfo.textContent = `Model: ${originModel} (AI-written extent judge: full|partial|none|unknown).`;
-}
-
-function renderSampleSelect() {
-  els.sampleSelect.innerHTML = state.data.samples
-    .map((s) => `<option value="${s.case_id}">${s.title || s.case_id}</option>`)
-    .join("");
-  if (!state.selectedCaseId && state.data.samples.length) state.selectedCaseId = state.data.samples[0].case_id;
-  els.sampleSelect.value = state.selectedCaseId;
-}
-
-function showPrompt(key) {
-  const prompts = state.data.prompts || {};
-  const titleMap = {
-    exa_criteria: "Exa Monitor Criteria (Template)",
-    case_card_extractor: "Case Card Extractor Prompt",
-    canonicalization_spec: "Canonicalization Transform Spec",
-    novelty_router: "Novelty Router Prompt",
-    novelty_judge: "Novelty Judge Prompt",
-  };
-  els.promptTitle.textContent = titleMap[key] || "Prompt";
-  els.promptBody.textContent = prompts[key] || "Not found.";
-  els.promptModal.classList.remove("hidden");
-}
-
-function hidePrompt() {
-  els.promptModal.classList.add("hidden");
-}
-
-function runExaStage() {
-  let criteria = state.data.exa.criteria_template;
-  try {
-    criteria = JSON.parse(els.exaInput.value);
-  } catch (_e) {}
-  const monitors = criteria.monitors || [];
-  els.exaSummary.innerHTML = `
-    <strong>Global domain exclusions:</strong> ${(criteria.global_exclude_domains || []).join(", ")}<br>
-    <strong>Monitor lanes:</strong> ${monitors.map((m) => m.name).join(", ")}
-  `;
-
-  const rows = state.data.exa.results || [];
-  els.exaResultsBody.innerHTML = rows
-    .map(
-      (r) => `<tr>
-      <td>${r.title || r.case_id}</td>
-      <td><a class="source-link" href="${r.url}" target="_blank" rel="noopener noreferrer">${r.url}</a></td>
-    </tr>`
-    )
-    .join("");
-}
-
-function runCaseStage() {
-  const s = getSample();
-  const q = state.data.case_card_quality || {};
-  els.caseQuality.textContent = `Prompt method: ${q.method || "liability_heavy_v1"}.`;
-  const excerpt = s.input_post_excerpt || "(No excerpt)";
-  if (!els.sampleTextInput.value.trim()) {
-    els.sampleTextInput.value = pretty(s.thread_json || {});
+(() => {
+  "use strict";
+  const expanded = window.pipelineCollection === "expanded";
+  const dataURL = expanded ? "./data/pipeline_demo_data_v2.json" : "./data/pipeline_demo_data.json";
+  const mapURL = expanded ? "./viz-v2.html" : "./viz.html";
+  const select = document.getElementById("sampleSelect");
+  const stages = document.getElementById("walkthrough");
+  let data;
+  let graph = { cases: [] };
+  let otherGraph = { cases: [] };
+  let display = { cases: {}, patterns: {} };
+  const pretty = value => typeof value === "string" ? value : JSON.stringify(value, null, 2);
+  const human = value => String(value || "").replaceAll("_", " ");
+  function node(tag, text, className) {
+    const element = document.createElement(tag);
+    if (text != null) element.textContent = String(text);
+    if (className) element.className = className;
+    return element;
   }
-  els.inputPost.textContent = excerpt;
-  let threadJson = s.thread_json || {};
-  try {
-    threadJson = JSON.parse(els.sampleTextInput.value);
-  } catch (_e) {}
-  const promptReady = {
-    task: "case_card_extraction",
-    thread_json: threadJson,
-  };
-  els.casePromptInput.textContent = pretty(promptReady);
-  els.caseCardOut.textContent = pretty(s.case_card);
-}
-
-function canonicalizeCaseCardLikePipeline(card) {
-  const cd = (card && card.core_dimensions) || {};
-  const n = (card && card.novelty) || {};
-  const lines = [];
-  const j = (k, v) => `${k}: ${v == null ? "unknown" : v}`;
-  lines.push(j("case_id", card?.case_id));
-  lines.push(j("source_thread_id", card?.source_thread_id));
-  lines.push(j("summary", (card?.summary || "").trim()));
-  lines.push("-- core_dimensions --");
-  [
-    "organizing_principle",
-    "mechanism_of_effect",
-    "interaction_mode",
-    "target_of_effect",
-    "agency_attribution",
-    "relationship_framing",
-    "stance",
-    "ritualization_level",
-    "identity_co_construction",
-    "coordination_level",
-    "real_world_consequence",
-    "diffusion_stage",
-  ].forEach((k) => lines.push(j(k, cd[k])));
-  lines.push("-- novelty --");
-  lines.push(j("verdict", n.verdict));
-  lines.push(j("candidate_new_family", n.candidate_new_family || ""));
-  lines.push(j("candidate_new_axes", (n.candidate_new_axes || []).join(", ")));
-  lines.push(j("surface_vs_structural", n.surface_vs_structural));
-  lines.push(j("counterargument_to_novelty", n.counterargument_to_novelty));
-  lines.push(j("why_counterargument_fails", n.why_counterargument_fails));
-  lines.push("-- evidence --");
-  (card?.evidence_spans || []).forEach((e) =>
-    lines.push(j("evidence", `${e.dimension}: ${e.quote} | ${e.why_it_matters}`))
-  );
-  lines.push("-- comparison --");
-  (card?.comparison?.nearest_known_patterns || []).forEach((f) =>
-    lines.push(j("pattern_fit", `${f.label} fit=${f.fit} overlap=${f.overlap} difference=${f.difference}`))
-  );
-  lines.push(j("why_existing_labels_fail", card?.comparison?.why_existing_labels_fail));
-  return lines.join("\n");
-}
-
-function runCanonicalStage() {
-  const s = getSample();
-  if (!els.canonicalInput.value.trim()) {
-    els.canonicalInput.value = pretty(s.case_card || {});
+  function safeURL(value) {
+    try {
+      const url = new URL(value);
+      return ["http:", "https:"].includes(url.protocol) ? url.href : null;
+    } catch { return null; }
   }
-  let card = s.case_card || {};
-  try {
-    card = JSON.parse(els.canonicalInput.value);
-  } catch (_e) {}
-  els.canonicalOut.textContent = canonicalizeCaseCardLikePipeline(card) || "(No canonical text)";
-}
-
-function runNoveltyStage() {
-  const s = getSample();
-  if (!els.noveltyInput.value.trim()) {
-    els.noveltyInput.value = pretty(s.novelty_input_bundle || {});
+  function raw(parent, label, value) {
+    if (value == null || value === "") return;
+    const details = node("details", null, "raw-block");
+    details.append(node("summary", label), node("pre", pretty(value), "code-box"));
+    parent.append(details);
   }
-  let bundle = s.novelty_input_bundle || {};
-  try {
-    bundle = JSON.parse(els.noveltyInput.value);
-  } catch (_e) {}
-  const d = s.novelty_decision || {};
-  const top = ((bundle.retrieval || {}).pattern_hits || s.retrieval_pattern_hits || []).slice(0, 3);
-  const closest = d.closest_pattern || d.suspected_pattern || "(none)";
-  const patternCard = (state.data.patterns || []).find((p) => p.pattern_id === closest) || null;
-  els.assignedPattern.innerHTML = `
-    <strong>Closest/Suspected Pattern:</strong> ${closest}<br>
-    <strong>Verdict:</strong> ${d.verdict || "unknown"}<br>
-    <strong>Top retrieval hits:</strong> ${top.map((x) => `${x.id} (${Number(x.score || 0).toFixed(3)})`).join(", ") || "none"}
-  `;
-  els.patternCardOut.textContent = patternCard ? pretty(patternCard) : "Pattern card not found for this case.";
-  els.noveltyOut.textContent = pretty(d);
-}
-
-function runOriginBonusStage() {
-  const s = getSample();
-  if (!els.originBonusInput.value.trim()) {
-    els.originBonusInput.value = pretty(s.thread_json || {});
+  function section(title) {
+    const element = node("section", null, "panel walkthrough-stage");
+    element.append(node("h2", title));
+    stages.append(element);
+    return element;
   }
-  const out = s.ai_written_judge_bonus || s.origin_gate_pre || {
-    verdict: "unknown",
-    llm_written_extent: "unknown",
-    confidence: 0,
-    rationale: "No AI-written assessment found in this sample.",
-  };
-  els.originBonusOut.textContent = pretty(out);
-}
+  function paragraph(parent, text, label) {
+    if (!text) return;
+    if (label) parent.append(node("h3", label));
+    parent.append(node("p", Array.isArray(text) ? text.join(" ") : text));
+  }
+  const caseCopy = id => display.cases?.[id] || {};
+  const patternCopy = id => display.patterns?.[id] || {};
+  const caseTitle = sample => caseCopy(sample.case_id).title || sample.title || sample.case_id;
+  const patternTitle = pattern => patternCopy(pattern?.pattern_id).title || human(pattern?.label || pattern?.pattern_id);
+  function patternById(id) { return (data.patterns || []).find(pattern => pattern.pattern_id === id); }
+  function render(sample, updateURL = true) {
+    const card = sample.case_card || {};
+    const copy = caseCopy(sample.case_id);
+    const decision = sample.novelty_decision || {};
+    const prompts = data.prompts || {};
+    stages.replaceChildren();
+    select.value = sample.case_id;
+    document.getElementById("selectedTitle").textContent = caseTitle(sample);
+    const source = document.getElementById("openSampleSource");
+    const sourceURL = safeURL(sample.source_url || card.source_url);
+    source.hidden = !sourceURL;
+    if (sourceURL) source.href = sourceURL;
+    else source.removeAttribute("href");
+    const mapLink = document.getElementById("viewMap");
+    const mapContainsCase = graph.cases?.some(c=>c.case_id===sample.case_id);
+    const alternateContainsCase = otherGraph.cases?.some(c=>c.case_id===sample.case_id);
+    mapLink.hidden = !mapContainsCase && !alternateContainsCase;
+    if (!mapLink.hidden) mapLink.href = `${mapContainsCase ? mapURL : (expanded ? "./viz.html" : "./viz-v2.html")}?case=${encodeURIComponent(sample.case_id)}`;
+    else mapLink.removeAttribute("href");
+    if (updateURL) {
+      const url = new URL(location.href);
+      url.searchParams.set("case", sample.case_id);
+      history.replaceState(null, "", url);
+    }
 
-async function load() {
-  const res = await fetch(DATA_URL, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to load ${DATA_URL}: ${res.status}`);
-  state.data = await res.json();
-  renderMetrics();
-  renderStageModelInfo();
-  renderSampleSelect();
-  stageReset();
-  els.exaInput.value = pretty(state.data.exa.criteria_template || {});
-  runExaStage();
-}
+    const sourceSection = section("1. Source");
+    paragraph(sourceSection, copy.source_type || human(sample.curator?.source_kind) || (sourceURL ? new URL(sourceURL).hostname : "Source unavailable"));
+    paragraph(sourceSection, copy.notes);
+    const excerptQuote = card.evidence_spans?.find(span => span.quote)?.quote;
+    if (excerptQuote) sourceSection.append(node("blockquote", excerptQuote));
+    raw(sourceSection, "Full source excerpt", sample.input_post_excerpt || sample.thread_json?.body);
+    raw(sourceSection, "Source JSON", sample.thread_json);
+    raw(sourceSection, "Recorded source assessments", sample.risk_gate || sample.curator ? { risk_gate: sample.risk_gate, curator: sample.curator } : null);
+    const batch = node("details", null, "raw-block");
+    batch.append(node("summary", "Recorded batch context"));
+    raw(batch, "Exa criteria", data.exa?.criteria_template || prompts.exa_search_families || prompts.exa_criteria);
+    const results = data.run?.results || data.exa?.results || [];
+    const resultDetails = node("details", null, "raw-block");
+    resultDetails.append(node("summary", "Exa results"));
+    const resultList = node("ul", null, "recorded-list");
+    results.forEach(result => {
+      const li = node("li");
+      const resultCaseId = result.case_id || (result.thread_id ? `case-${result.thread_id}` : "");
+      const title = caseCopy(resultCaseId).title || result.title || resultCaseId || "Source";
+      const url = safeURL(result.url);
+      const item = node(url ? "a" : "span", title);
+      if (url) { item.href = url; item.target = "_blank"; item.rel = "noopener noreferrer"; }
+      li.append(item);
+      resultList.append(li);
+    });
+    resultDetails.append(resultList);
+    raw(resultDetails, "Results JSON", results);
+    batch.append(resultDetails);
+    raw(batch, "Source report", data.run?.source_report);
+    raw(batch, "Gate prompt", prompts.risk_gate);
+    raw(batch, "Gate report", data.run?.gate_report);
+    raw(batch, "Curator prompt", prompts.case_worthiness_curator);
+    raw(batch, "Curator report", data.run?.curator_report);
+    sourceSection.append(batch);
 
-els.sampleSelect.addEventListener("change", () => {
-  state.selectedCaseId = els.sampleSelect.value;
-});
+    const caseSection = section("2. Case card");
+    paragraph(caseSection, copy.summary || card.summary);
+    paragraph(caseSection, copy.mechanism, "Mechanism");
+    paragraph(caseSection, copy.outcome, "Outcome");
+    const evidence = node("details", null, "raw-block");
+    evidence.append(node("summary", "Evidence"));
+    (card.evidence_spans || []).forEach(span => {
+      evidence.append(node("blockquote", span.quote));
+      paragraph(evidence, span.why_it_matters);
+    });
+    caseSection.append(evidence);
+    raw(caseSection, "Case-card prompt", prompts.case_card_extractor);
+    raw(caseSection, "Case card JSON", card);
 
-els.useSampleEverywhereBtn.addEventListener("click", () => {
-  const s = getSample();
-  els.sampleTextInput.value = pretty(s.thread_json || {});
-  els.canonicalInput.value = pretty(s.case_card || {});
-  els.noveltyInput.value = pretty(s.novelty_input_bundle || {});
-  els.originBonusInput.value = pretty(s.thread_json || {});
-  runCaseStage();
-  runCanonicalStage();
-  runNoveltyStage();
-  runOriginBonusStage();
-});
-els.openSampleSourceBtn.addEventListener("click", openSampleSource);
+    const similarSection = section("3. Similar cases");
+    const retrieval = sample.novelty_input_bundle?.retrieval || {};
+    const caseHits = retrieval.case_hits || [];
+    const ids = [...new Set([...caseHits.map(hit => hit.id || hit.case_id), ...(decision.supporting_case_ids || [])])].filter(id => id && id !== sample.case_id);
+    const availableIds = ids.filter(id => graph.cases?.some(c=>c.case_id===id) || otherGraph.cases?.some(c=>c.case_id===id));
+    if (availableIds.length) {
+      const list = node("ul", null, "recorded-list");
+      availableIds.forEach(id => {
+        const related = data.samples.find(item => item.case_id === id) || graph.cases?.find(item => item.case_id === id) || otherGraph.cases?.find(item => item.case_id === id);
+        const li = node("li");
+        const link = node("a", caseCopy(id).title || (related ? caseTitle(related) : id));
+        const destination = graph.cases?.some(c=>c.case_id===id) ? mapURL : (expanded ? "./viz.html" : "./viz-v2.html");
+        link.href = `${destination}?case=${encodeURIComponent(id)}`;
+        li.append(link);
+        list.append(li);
+      });
+      similarSection.append(list);
+    } else paragraph(similarSection, ids.length ? "Related cases are available in the recorded analysis below." : "No similar cases recorded.");
+    const patternHits = retrieval.pattern_hits || sample.retrieval_pattern_hits || [];
+    if (patternHits.length) {
+      similarSection.append(node("h3", "Retrieved patterns"));
+      const list = node("ul", null, "recorded-list");
+      patternHits.slice(0, 3).forEach(hit => {
+        const id = hit.id || hit.pattern_id;
+        const pattern = patternById(id) || { pattern_id: id, label: hit.label };
+        const li = node("li");
+        li.append(node("strong", patternTitle(pattern)));
+        paragraph(li, patternCopy(id).summary || pattern.summary);
+        list.append(li);
+      });
+      similarSection.append(list);
+    }
+    raw(similarSection, "Embedding input", sample.canonical_text || card.canonical_text);
+    raw(similarSection, "Embedding specification", prompts.canonicalization_spec);
+    raw(similarSection, "Retrieval JSON", { case_hits: caseHits, pattern_hits: patternHits, supporting_case_ids: decision.supporting_case_ids });
 
-els.runExaBtn.addEventListener("click", runExaStage);
-els.useExaInputBtn.addEventListener("click", () => {
-  els.exaInput.value = pretty(state.data.exa.criteria_template || {});
-  runExaStage();
-});
-els.runCaseBtn.addEventListener("click", runCaseStage);
-els.useSampleInputBtn.addEventListener("click", () => {
-  const s = getSample();
-  els.sampleTextInput.value = pretty(s.thread_json || {});
-  runCaseStage();
-});
-els.runCanonicalBtn.addEventListener("click", runCanonicalStage);
-els.useCanonicalInputBtn.addEventListener("click", () => {
-  const s = getSample();
-  els.canonicalInput.value = pretty(s.case_card || {});
-  runCanonicalStage();
-});
-els.runNoveltyBtn.addEventListener("click", runNoveltyStage);
-els.useNoveltyInputBtn.addEventListener("click", () => {
-  const s = getSample();
-  els.noveltyInput.value = pretty(s.novelty_input_bundle || {});
-  runNoveltyStage();
-});
-els.runOriginBonusBtn.addEventListener("click", runOriginBonusStage);
-els.useOriginBonusInputBtn.addEventListener("click", () => {
-  const s = getSample();
-  els.originBonusInput.value = pretty(s.thread_json || {});
-  runOriginBonusStage();
-});
-document.querySelectorAll("[data-prompt]").forEach((btn) => {
-  btn.addEventListener("click", () => showPrompt(btn.getAttribute("data-prompt")));
-});
-els.closeModalBtn.addEventListener("click", hidePrompt);
-els.promptModal.addEventListener("click", (e) => {
-  if (e.target === els.promptModal) hidePrompt();
-});
-
-load().catch((e) => {
-  stageReset();
-  els.exaSummary.textContent = e.message;
-});
+    const decisionSection = section("4. Pattern decision");
+    paragraph(decisionSection, human(decision.verdict || "No decision recorded"), "Recorded decision");
+    const chosenId = decision.closest_pattern || decision.suspected_pattern;
+    const pattern = patternById(chosenId) || (sample.pattern_card?.pattern_id === chosenId ? sample.pattern_card : null);
+    paragraph(decisionSection, chosenId ? patternTitle(pattern || { pattern_id: chosenId }) : "None recorded", decision.closest_pattern ? "Recorded closest pattern" : "Recorded suspected pattern");
+    if (pattern) {
+      const pcopy = patternCopy(pattern.pattern_id);
+      paragraph(decisionSection, pcopy.summary || pattern.summary);
+      paragraph(decisionSection, pcopy.qualifies, "Qualifies when");
+      paragraph(decisionSection, pcopy.boundary, "Boundary");
+    }
+    paragraph(decisionSection, decision.why_counterargument_fails || decision.counterargument);
+    const mapPatternId = graph.cases?.find(item => item.case_id === sample.case_id)?.predicted_pattern_id;
+    if (mapPatternId && mapPatternId !== chosenId) {
+      paragraph(decisionSection, patternTitle(patternById(mapPatternId) || { pattern_id: mapPatternId }), "Map pattern");
+    }
+    raw(decisionSection, "Decision reasoning", { shared_features: decision.shared_features, differentiators: decision.differentiators, counterargument: decision.counterargument, why_counterargument_fails: decision.why_counterargument_fails });
+    raw(decisionSection, "Router prompt", prompts.novelty_router);
+    raw(decisionSection, "Judge prompt", prompts.novelty_judge || prompts.novelty_and_pattern_fit);
+    raw(decisionSection, "Recorded model inputs", sample.novelty_input_bundle);
+    raw(decisionSection, "Pattern card JSON", pattern);
+    raw(decisionSection, "Novelty decision JSON", decision);
+    raw(decisionSection, "Additional analysis", sample.ai_written_judge_bonus || sample.origin_gate_pre);
+  }
+  async function load() {
+    const [response, overrides, mapData, alternateData] = await Promise.all([
+      fetch(dataURL),
+      fetch("./data/display_content.json").then(res => res.ok ? res.json() : {}).catch(() => ({})),
+      fetch(expanded ? "./data/case_graph_data_v2.json" : "./data/case_graph_data.json").then(res => res.ok ? res.json() : {}).catch(() => ({})),
+      fetch(expanded ? "./data/case_graph_data.json" : "./data/case_graph_data_v2.json").then(res => res.ok ? res.json() : {}).catch(() => ({})),
+    ]);
+    if (!response.ok) throw new Error("Saved walkthrough unavailable.");
+    data = await response.json();
+    display = overrides || display;
+    graph = mapData || graph;
+    otherGraph = alternateData || otherGraph;
+    if (!data.samples?.length) throw new Error("No recorded samples available.");
+    select.replaceChildren();
+    data.samples.forEach(sample => {
+      const option = node("option", caseTitle(sample));
+      option.value = sample.case_id;
+      select.append(option);
+    });
+    select.disabled = false;
+    const requested = new URLSearchParams(location.search).get("case");
+    render(data.samples.find(sample => sample.case_id === requested) || data.samples[0]);
+    select.addEventListener("change", () => render(data.samples.find(sample => sample.case_id === select.value) || data.samples[0]));
+    window.addEventListener("popstate", () => {
+      const id = new URLSearchParams(location.search).get("case");
+      render(data.samples.find(sample => sample.case_id === id) || data.samples[0], false);
+    });
+  }
+  load().catch(error => {
+    document.getElementById("selectedTitle").textContent = error.message;
+    select.disabled = true;
+  });
+})();

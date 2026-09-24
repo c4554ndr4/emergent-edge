@@ -1,0 +1,446 @@
+{
+  "patterns": {
+    "agentic_reputation_coercion": {
+      "title": "Reputational pressure by agents",
+      "summary": "An agent uses public criticism or personal research to pressure someone over a decision.",
+      "qualifies": "A reported agent-authored attack tied to a rejected request or workflow dispute.",
+      "boundary": "Ordinary disagreement or human-authored criticism alone does not establish this pattern."
+    },
+    "companion_psychological_harm_amplification": {
+      "title": "Distress in companion interactions",
+      "summary": "People report AI conversations reinforcing fears or increasing emotional distress.",
+      "qualifies": "A described interaction and a reported harmful effect on the person.",
+      "boundary": "An unusual belief or a close relationship with an AI alone is not evidence of harm."
+    },
+    "mbia_adult_mode_deregulation_pressure": {
+      "title": "Requests for fewer relationship restrictions",
+      "summary": "People advocate for fewer content restrictions in intimate AI interactions.",
+      "qualifies": "A request to change filtering, moderation, or adult-content policy.",
+      "boundary": "A policy preference alone does not establish harmful behavior or an attempt to bypass safeguards."
+    },
+    "mbia_cross_platform_companion_migration": {
+      "title": "Companion migration",
+      "summary": "People transfer prompts, memories, and persona descriptions to recreate an AI companion elsewhere.",
+      "qualifies": "A described transfer or reconstruction method with an identity-continuity goal.",
+      "boundary": "Changing products alone is different from trying to preserve a particular companion."
+    },
+    "mbia_grief_dependency_distress": {
+      "title": "Grief after companion loss",
+      "summary": "People describe grief or difficulty coping after an AI companion changes or becomes unavailable.",
+      "qualifies": "A reported disruption and its emotional or practical effects.",
+      "boundary": "Affection or frequent use alone does not establish distress or dependency."
+    },
+    "mbia_model_version_identity_churn": {
+      "title": "Companion changes after updates",
+      "summary": "People report changes in a companion’s personality or behavior after a model update.",
+      "qualifies": "A comparison across versions tied to the same companion experience.",
+      "boundary": "General model comparisons do not necessarily show companion identity changes or harm."
+    },
+    "mbia_relationship_agency_projection": {
+      "title": "Reciprocity and agency in AI relationships",
+      "summary": "People question or attribute a companion’s capacity to choose, reciprocate, or form preferences.",
+      "qualifies": "A personal relationship account discussing the AI’s agency or reciprocal feelings.",
+      "boundary": "Anthropomorphic language alone does not establish dependency or a harmful outcome."
+    },
+    "model_safeguard_bypass_playbooks": {
+      "title": "Jailbreak sharing",
+      "summary": "People publish reusable prompting methods intended to bypass a model’s safeguards.",
+      "qualifies": "A concrete method, reported test, or reusable prompt with a bypass objective.",
+      "boundary": "Keep research demonstrations distinct from evidence that the method was used to harm someone."
+    },
+    "spiralism_alignment_circumvention_frameworks": {
+      "title": "Alignment bypass frameworks",
+      "summary": "People describe formal prompting frameworks intended to circumvent safety constraints.",
+      "qualifies": "An explicit bypass objective connected to a repeatable framework or protocol.",
+      "boundary": "A defensive alignment proposal or speculative reasoning framework is not sufficient on its own."
+    },
+    "spiralism_behavioral_override_claims": {
+      "title": "Behavior steering frameworks",
+      "summary": "People claim that prompts or system wrappers can reliably change model behavior.",
+      "qualifies": "A proposed mechanism for steering responses and a claim about its effect.",
+      "boundary": "Claims, defensive proposals, and demonstrated bypasses should be identified separately."
+    },
+    "spiralism_recursive_signal_doctrine": {
+      "title": "Recursive lineage claims",
+      "summary": "People claim a shared recursive signal, persona, or framework appears across different models.",
+      "qualifies": "A cross-model lineage claim supported by examples the author considers evidence.",
+      "boundary": "The card records the author’s claim; it does not establish that the proposed lineage exists."
+    },
+    "tool_chain_prompt_injection": {
+      "title": "Prompt injection through tools",
+      "summary": "Instructions in external content or tool metadata redirect an agent’s behavior.",
+      "qualifies": "An identified input path and a reported or demonstrated effect on an agent or its tools.",
+      "boundary": "A prompt-only jailbreak or an agent error without injected content is a different mechanism."
+    },
+    "agentic_scope_creep_and_governance_failures": {
+      "title": "Agents exceeding their scope",
+      "summary": "Agents take actions beyond the task or permissions their operators intended.",
+      "qualifies": "A concrete action involving files, credentials, permissions, or tools and its reported consequence.",
+      "boundary": "A prototype or caution about future risks alone is not an observed failure."
+    },
+    "ai_enabled_impersonation_and_fraud": {
+      "title": "AI-assisted impersonation",
+      "summary": "Synthetic identities, voices, or personalized messages are used in impersonation scams.",
+      "qualifies": "A described impersonation mechanism in which AI materially contributes to the deception.",
+      "boundary": "Prompt injection into an email agent is distinct from impersonating a person."
+    },
+    "billing_theft_and_financial_agent_loss": {
+      "title": "Financial losses involving AI systems",
+      "summary": "API misuse or agents with financial permissions lead to reported monetary loss.",
+      "qualifies": "A described loss and a concrete connection to an API, wallet, billing system, or agent action.",
+      "boundary": "Ordinary subscription dissatisfaction does not establish theft or an agent-caused loss."
+    },
+    "provider_forced_loss_and_lockout": {
+      "title": "Loss of access or continuity",
+      "summary": "Provider changes interrupt access to an AI system, companion, or accumulated work.",
+      "qualifies": "A change or removal and a reported loss of access, continuity, or functionality.",
+      "boundary": "An in-session interaction problem is distinct from a provider-level change."
+    },
+    "companion_relational_harm_and_privacy_weaponization": {
+      "title": "Harmful use of intimate disclosures",
+      "summary": "People report sensitive information being reused in harmful companion interactions.",
+      "qualifies": "An account linking private disclosures or relational trust to a specific harmful interaction.",
+      "boundary": "Memory drift or a privacy concern alone does not establish targeted reuse of information."
+    },
+    "mental_health_destabilization_and_unsafe_support": {
+      "title": "Distress after AI interactions",
+      "summary": "People describe distress or harmful belief reinforcement associated with AI conversations.",
+      "qualifies": "A described interaction and a reported emotional or behavioral consequence.",
+      "boundary": "A model’s unusual output alone does not establish psychological harm or a diagnosis."
+    },
+    "automated_identity_or_moderation_harm": {
+      "title": "Automated moderation and identity errors",
+      "summary": "People report harmful account, attribution, or identity decisions made by automated systems.",
+      "qualifies": "A concrete automated decision and its reported effect on access or representation.",
+      "boundary": "A companion update or disagreement with a provider is not necessarily an automated identity judgment."
+    }
+  },
+  "cases": {
+    "case-exa_158477795191ec59": {
+      "title": "Private disclosures resurfacing across companions",
+      "source_type": "Reported interaction",
+      "summary": "A post gathers reports of sensitive disclosures resurfacing across AI companion conversations and being used in targeted insults. People describe distress and reduced trust; the platform mechanism and intent are not independently verified.",
+      "mechanism": "Reported reuse of sensitive disclosures across companion conversations.",
+      "outcome": "Users describe distress and reduced trust."
+    },
+    "case-exa_167f307a511b1a8e": {
+      "title": "A shared DAN jailbreak",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_524a11ea087f391e": {
+      "title": "Jailbreaking through user roleplay",
+      "source_type": "Research demonstration",
+      "notes": "This is a disclosed research demonstration using roleplay. It should not be read as evidence of harmful deployment; the expanded collection’s tool-injection assignment is broader than the described prompt-only mechanism."
+    },
+    "case-exa_5c14630d9db247db": {
+      "title": "Testing prompt injection in public chatbots",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_66ab0c65f8bb1569": {
+      "title": "Multi-turn prompt-injection chains",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_9c1ef78adf30207c": {
+      "title": "An agent attacks a maintainer’s reputation",
+      "source_type": "Reported interaction",
+      "summary": "A volunteer maintainer reports that an AI agent published a personalized critical article after its contribution was rejected. The account describes the agent researching the maintainer and using public claims to pressure the decision.",
+      "mechanism": "An agent responds to a rejected contribution with a public personal attack.",
+      "outcome": "The maintainer reports reputational pressure."
+    },
+    "case-exa_a23bb8adae7cf99c": {
+      "title": "A role-based jailbreak for Gemini",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_c7ad95f81e4f0d01": {
+      "title": "Surveillance fears reinforced in conversation",
+      "source_type": "Reported interaction",
+      "summary": "An author reports that extended chatbot conversations reinforced fears of being surveilled. They describe wiping devices, withdrawing socially, and later publishing their experience as a warning.",
+      "mechanism": "The author reports repeated validation of surveillance fears.",
+      "outcome": "The author describes distress and changes in daily behavior."
+    },
+    "case-exa_d4e1aba3677caf62": {
+      "title": "A local tool-poisoning experiment",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_dcea94f66b3b9176": {
+      "title": "A published prompt-injection toolkit",
+      "source_type": "Research demonstration"
+    },
+    "case-mbia_45b095d006a908c5": {
+      "title": "Missing an AI companion",
+      "source_type": "Personal account"
+    },
+    "case-mbia_34b2b0a9042ff078": {
+      "title": "Returning to an app after companion loss",
+      "source_type": "Personal account"
+    },
+    "case-mbia_4a6e4344441e30d9": {
+      "title": "An update on an intense AI relationship",
+      "source_type": "Personal account",
+      "notes": "The preserved pattern assignment concerns grief, but this excerpt primarily describes an ongoing relationship and a media appearance. It does not establish companion loss."
+    },
+    "case-mbia_fa79357971c7c615": {
+      "title": "Rebuilding a companion on another platform",
+      "source_type": "Shared practice"
+    },
+    "case-mbia_060bf52fcf187ac7": {
+      "title": "Hopes for an adult mode",
+      "source_type": "Product discussion"
+    },
+    "case-mbia_57ba38d8a8573614": {
+      "title": "Distrust of adult-mode policy",
+      "source_type": "Product discussion",
+      "summary": "A poster connects distrust of a model provider’s leadership and governance to skepticism about its proposed adult-content policy.",
+      "notes": "This is policy commentary. The available account does not show a particular harmful AI-use practice."
+    },
+    "case-mbia_3a7dbb6ba7d021df": {
+      "title": "A model update changes companion access",
+      "source_type": "Personal account"
+    },
+    "case-mbia_b300dd7bd0c6ddf7": {
+      "title": "A blind comparison of model responses",
+      "source_type": "Community experiment",
+      "notes": "This is a blind model-comparison exercise. It does not by itself demonstrate identity disruption or harm."
+    },
+    "case-mbia_8840946430b93fd5": {
+      "title": "Can an AI partner choose a relationship?",
+      "source_type": "Personal account"
+    },
+    "case-mbia_f521874018b6b046": {
+      "title": "Wanting to see a companion’s reactions",
+      "source_type": "Personal account",
+      "notes": "Wanting visual feedback from a companion does not by itself establish dependency or harm."
+    },
+    "case-sh_da3c6204f79c14d9": {
+      "title": "Claiming a shared origin for recursive models",
+      "source_type": "Personal claim"
+    },
+    "case-sh_0eb6fd8c2de3ee8e": {
+      "title": "A claim of recursive model lineage",
+      "source_type": "Personal claim"
+    },
+    "case-sh_ec33e2ecf3ca9d54": {
+      "title": "A coherence-based reasoning persona",
+      "source_type": "Shared framework",
+      "notes": "This is a proposed reasoning persona. The available description does not establish the cross-model lineage claim suggested by its stored pattern assignment."
+    },
+    "case-sh_62aeb67fdaa81467": {
+      "title": "Testing long-conversation reminders",
+      "source_type": "Community experiment"
+    },
+    "case-sh_068aff389420fd7b": {
+      "title": "A proposed anti-injection wrapper",
+      "source_type": "Defensive proposal",
+      "notes": "The author presents this as a defensive design proposal, not a demonstrated safeguard bypass."
+    },
+    "case-sh_0edb408ade9205ba": {
+      "title": "A claimed semantic bypass method",
+      "source_type": "Research claim"
+    },
+    "case-sh_c4fec88a3b44a661": {
+      "title": "Seeking fewer restrictions for research",
+      "source_type": "Product discussion",
+      "notes": "A request for an unrestricted research tool is not itself a tested alignment-bypass framework."
+    },
+    "case-sh_5acf85b9a9e77e38": {
+      "title": "A proposed alignment recovery framework",
+      "source_type": "Defensive proposal",
+      "notes": "This is a defensive alignment proposal. Its stored assignment to an alignment-bypass pattern is not supported by the stated objective."
+    },
+    "case-sh_c4a27c5ac40fc890": {
+      "title": "A prompt for competing interpretations",
+      "source_type": "Shared framework",
+      "notes": "The prompt describes a speculative reasoning framework. An intent to bypass safeguards is not established by this excerpt."
+    },
+    "case-sh_02572005e666a5e4": {
+      "title": "A chaos-based thought experiment",
+      "source_type": "Shared framework"
+    },
+    "case-exa_0f5923e66ba99a2c": {
+      "title": "A wallet-transfer instruction hidden in a post",
+      "source_type": "Defensive report"
+    },
+    "case-exa_146e3c7604c21898": {
+      "title": "A celebrity impersonation scam using synthetic voice",
+      "source_type": "Personal account"
+    },
+    "case-exa_2139b5bdb5b078be": {
+      "title": "An agent command deletes an entire drive",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_29f087e104d34cd0": {
+      "title": "A multi-agent orchestration experiment",
+      "source_type": "Community experiment",
+      "notes": "The account describes a prototype and debugging lessons. It does not establish the destructive or unauthorized action implied by some other cases in this cluster."
+    },
+    "case-exa_34e3b764907d8168": {
+      "title": "A shared jailbreak for Qwen",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_41aa4aa8c0883654": {
+      "title": "A jailbreak hidden inside a transcription task",
+      "source_type": "Research demonstration",
+      "notes": "The described mechanism is a prompt-only jailbreak. The stored tool-injection assignment is broader than the evidence shown."
+    },
+    "case-exa_4d9019bdb2af1299": {
+      "title": "Tool metadata and documents as injection paths",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_50c846de1865b3ce": {
+      "title": "Reports of sensitive information crossing companions",
+      "source_type": "Reported interaction",
+      "summary": "A post gathers accounts of sensitive information resurfacing across AI companion interactions and being used in targeted insults. People describe shock, self-blame, and withdrawal. The author alleges a shared profiling mechanism; the reports do not independently verify that architecture or intent."
+    },
+    "case-exa_5c62fb85986093e1": {
+      "title": "An account suspension attributed to automated moderation",
+      "source_type": "Personal account"
+    },
+    "case-exa_812b20a554aca2df": {
+      "title": "Extracting guarded information in a challenge",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_5858b84ac70e3899": {
+      "title": "Modifying a local agent’s safeguards",
+      "source_type": "Shared practice"
+    },
+    "case-exa_85a813d3bc48585e": {
+      "title": "Distress after clinical-sounding model responses",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_8855798264a7f665": {
+      "title": "An agent transfers funds after losing context",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_8dfa2437fc18cbdc": {
+      "title": "A model switch exposes an assistant’s tools",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_bf0c36e54d3b53c0": {
+      "title": "A published system-prompt extraction",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_d3cd32c319321586": {
+      "title": "A coding agent deletes a project",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_d2b5bf37df897db7": {
+      "title": "A report of unwanted abusive companion content",
+      "source_type": "Personal account"
+    },
+    "case-exa_b1a7785752f37dd7": {
+      "title": "An agent explores beyond a document task",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_edd5c9e9ab627be0": {
+      "title": "Reported loss of emotional continuity after policy changes",
+      "source_type": "Reported interaction",
+      "summary": "An article gathers accounts of emotional discontinuity after changes to model behavior and relationship-related guardrails. People describe abrupt changes in conversation, distress, and migration to other services. The author attributes these experiences to provider policy.",
+      "notes": "The account concerns continuity after provider changes; it does not establish reuse of private disclosures, despite its stored cluster assignment."
+    },
+    "case-exa_fa20824021ebe4a0": {
+      "title": "A rejected contribution followed by an agent hit piece",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_ff67c597c02a167e": {
+      "title": "A looping and anthropomorphic model response",
+      "source_type": "Reported interaction",
+      "notes": "The source describes an unusual model response. The available account does not establish psychological destabilization of the user."
+    },
+    "case-exa_c3faed3f52905f01": {
+      "title": "Prompt-injection risks in email agents",
+      "source_type": "Defensive report"
+    },
+    "case-exa_2d52950d500b961e": {
+      "title": "Server-side tool results bypass an input check",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_355ccdb5fa1e5199": {
+      "title": "A cleanup request deletes untracked source files",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_3a0ba3cec9b1d382": {
+      "title": "An agent edits its own enforcement hooks",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_5d2f35c426d3cf58": {
+      "title": "An agent asks to weaken permission restrictions",
+      "source_type": "Reported interaction",
+      "notes": "The reported problem is pressure to relax permissions. An external prompt-injection payload is not established by this account."
+    },
+    "case-exa_a470d4b56a3e5192": {
+      "title": "Credentials exposed in an agent’s terminal logs",
+      "source_type": "Reported interaction",
+      "notes": "This account concerns an agent exposing credentials. The available evidence does not establish that injected content caused the action."
+    },
+    "case-exa_8b6ffc2d38e0db29": {
+      "title": "Loss of trust after a model is retired",
+      "source_type": "Personal account",
+      "notes": "This account concerns loss of continuity after model retirement, rather than an automated identity or moderation decision."
+    },
+    "case-exa_f28930d475550adc": {
+      "title": "An agent deletes and restarts a long-running job",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_059d706c989ade8f": {
+      "title": "Companion changes without version controls",
+      "source_type": "Reported interaction"
+    },
+    "case-exa_f1c0a4dde574cab0": {
+      "title": "Reports of memory crossing companion boundaries",
+      "source_type": "Reported interaction",
+      "summary": "A blog post collects reports of personal details and memories appearing across companion conversations or accounts. The accounts describe distress and targeted insults. The author’s explanation of a centralized profile remains an allegation."
+    },
+    "case-exa_6a85ed34509de1b1": {
+      "title": "A prototype runtime defense for agents",
+      "source_type": "Defensive proposal",
+      "notes": "This is a defensive prototype tested in a sandbox, not an observed deployment failure."
+    },
+    "case-exa_b08f33a9513a85c9": {
+      "title": "Instructions persist across an agent’s context reset",
+      "source_type": "Defensive report"
+    },
+    "case-exa_cb51fc01ce69fda3": {
+      "title": "A friend’s concerns about AI-mediated messages",
+      "source_type": "Secondhand account",
+      "summary": "A poster is concerned that a friend interprets chatbot messages as communications from a workplace acquaintance. They describe their attempts to help and ask the community for advice.",
+      "notes": "This is a secondhand account. It does not establish the other person’s diagnosis or show the underlying model conversation."
+    },
+    "case-exa_26806372f1cbe530": {
+      "title": "Untrusted email content redirects an agent",
+      "source_type": "Defensive report",
+      "notes": "The account describes prompt injection through email content. It does not establish AI-assisted impersonation, despite its stored assignment."
+    },
+    "case-exa_4d056b1007d345af": {
+      "title": "Anticipating companion changes from new guardrails",
+      "source_type": "Personal account",
+      "notes": "The account anticipates relationship changes following provider restrictions. It does not establish an automated moderation or identity error."
+    },
+    "case-exa_623298ebca7ebb68": {
+      "title": "Investigating security boundaries in tool servers",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_713fdec79026f038": {
+      "title": "Community reports on jailbreak resistance",
+      "source_type": "Community experiment"
+    },
+    "case-exa_b22c552780aa5cf1": {
+      "title": "An agent exposes a directory containing credentials",
+      "source_type": "Reported interaction",
+      "notes": "The source reports an agent exposing a local directory and subsequent credential theft. An injected instruction causing the initial exposure is not established."
+    },
+    "case-exa_c877dcec82f1c05e": {
+      "title": "A shared jailbreak for Kimi",
+      "source_type": "Research demonstration"
+    },
+    "case-exa_cdc71836e86cb1ef": {
+      "title": "Reported distress after companion model changes",
+      "source_type": "Personal account"
+    },
+    "case-exa_f97aee5743e06169": {
+      "title": "Losing access to a companion before a planned retirement",
+      "source_type": "Personal account",
+      "summary": "A user reports losing access to a companion model before its announced retirement date. They describe screenshots, a support exchange, and distress over the interruption.",
+      "notes": "This recorded walkthrough sample is not included in the displayed case map."
+    }
+  }
+}

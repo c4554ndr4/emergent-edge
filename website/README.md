@@ -1,14 +1,13 @@
 (AI-assisted writeup)
 
-# Original Emergent Edge explorer
+# Emergent Edge explorer
 
-Restored from the pre-edit static site at commit `655b63e2d350e6d1586d442881d57d8982c1cea1`. The original layout, sample flow, case coordinates, pattern assignments, controls, and styling are preserved. Provider/product references and links containing them have been omitted.
+[Explore the cases](https://emergent-edge-case-ai-use-detector.vercel.app/) · [Follow a sample](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline.html) · [About the project](https://emergent-edge-case-ai-use-detector.vercel.app/about.html)
 
-- [Interactive sample flow](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline.html)
-- [Case clusters](https://emergent-edge-case-ai-use-detector.vercel.app/viz-v2.html): 51 case cards and 10 pattern cards.
-- [Daily-run walkthrough](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline-v2.html)
-- [Earlier case map](https://emergent-edge-case-ai-use-detector.vercel.app/viz.html)
+The site opens on the original collection of 30 cases and 12 patterns. The expanded collection contains 51 cases and 10 patterns. They are separate research snapshots, with their original coordinates and assignments preserved.
 
-The static files are under `public/`. Serve that directory for a local preview. These are recorded research examples; the stage controls do not make live model calls. The original source reports, evidence excerpts, prompts, and outputs remain available with provider references removed. Model judgments and source allegations are not independent verification.
+Select a case to read its summary, evidence, and linked pattern. Pattern labels highlight their cases. The walkthrough follows a selected example through its source, case card, retrieved comparisons, and recorded pattern decision. Prompts and full outputs remain available in expandable sections. These are saved research results; the site does not make live model calls.
 
-The public deployment uses `vercel.json`; the original private site's password-handling server is not included. Historical standalone URLs redirect to the corresponding working views.
+Short titles, pattern descriptions, and review notes live in `public/data/display_content.json`, separately from the original research data. Notes identify questionable assignments and distinguish reported experiences, research demonstrations, and defensive proposals. Missing extraction fields are not filled with invented descriptions. Editorial copy does not alter embedding coordinates, saved judgments, or the underlying model outputs.
+
+Serve `public/` for a local preview. The public deployment uses `vercel.json`. Historical standalone URLs redirect to the corresponding working views.

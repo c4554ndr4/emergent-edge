@@ -1,0 +1,24 @@
+#patternLegend { display:flex; flex-wrap:wrap; gap:8px; padding:16px 0; }
+#patternLegend .legend-count { flex-basis:100%; margin:0 0 4px; color:var(--muted,#a8b9cd); font-size:13px; }
+.pattern-legend-button { display:inline-flex; align-items:center; gap:8px; text-align:left; padding:8px 11px; border:1px solid #34465a; border-radius:6px; background:transparent; color:inherit; font:inherit; font-size:13px; cursor:pointer; }
+.pattern-legend-button[aria-pressed="true"] { border-color:#dbeafe; background:#24374c; }
+.pattern-swatch { width:9px; height:9px; border-radius:50%; flex:none; }
+.pattern-count { color:#afc1d5; font-size:12px; }
+#caseSvg .map-readable-label { fill:#e1eaf6; paint-order:stroke; stroke:#101c2c; stroke-width:3px; stroke-linejoin:round; pointer-events:none; }
+#caseSvg .pattern-node, #caseSvg .node { cursor:pointer; }
+#caseSvg [role="button"]:focus { outline:none; stroke:#fff; stroke-width:3px; }
+.selection-ring { pointer-events:none; }
+#detailPanel { overflow-wrap:anywhere; }
+#detailPanel h2 { font-size:21px; line-height:1.25; }
+#detailPanel h3 { font-size:16px; margin:20px 0 8px; }
+#detailPanel p { line-height:1.6; }
+#detailPanel .detail-eyebrow { font-size:12px; color:var(--muted,#a8b9cd); margin:0 0 8px; }
+#detailPanel blockquote { margin:12px 0; padding:4px 0 4px 14px; border-left:2px solid #4b637e; line-height:1.55; color:#dce7f5; }
+.linked-pattern { margin:24px 0; padding-top:20px; border-top:1px solid #34465a; }
+.linked-pattern h3 { margin-top:8px!important; }
+.highlight-pattern { background:transparent; border:1px solid #52677e; border-radius:5px; padding:8px 12px; color:inherit; cursor:pointer; }
+.detail-links { display:flex; flex-wrap:wrap; gap:14px; margin:20px 0; }
+.recorded-analysis { border-top:1px solid #34465a; padding-top:16px; margin-top:24px; }
+.recorded-analysis summary, #mapGuide summary { cursor:pointer; }
+.recorded-analysis pre { white-space:pre-wrap; overflow-wrap:anywhere; font-size:12px; line-height:1.5; max-height:420px; overflow:auto; }
+.pattern-legend-button:focus-visible, .highlight-pattern:focus-visible, summary:focus-visible { outline:2px solid #dbeafe; outline-offset:3px; }

@@ -1,65 +1,53 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Emergent Edge-Case AI Use Detector</title>
-    <link rel="stylesheet" href="./viz.css" />
-  </head>
-  <body>
-    <div class="shell">
-      <header class="topbar">
-        <div>
-          <h1>Emergent Edge-Case AI Use Detector</h1>
-          <p>Case cards with linked pattern cards</p>
-        </div>
-        <div class="top-actions">
-          <a class="btn" href="./index.html">Home</a>
-          <a class="btn" href="./pipeline.html">Pipeline Demo</a>
-          <a class="btn" href="./viz.html">Case Cards</a>
-        </div>
-      </header>
-
-      <section class="metrics" id="metrics"></section>
-
-      <section class="layout">
-        <article class="panel chart-panel">
-          <div class="panel-head">
-            <h2>Case Cards</h2>
-            <div class="panel-actions">
-              <label>
-                Color by
-                <select id="colorBy">
-                  <option value="pattern">Assigned Pattern</option>
-                  <option value="liability">Major Liability</option>
-                </select>
-              </label>
-              <label>
-                <input id="showPatterns" type="checkbox" />
-                Show pattern cards
-              </label>
-              <button id="resetZoomBtn" class="btn small-btn">Reset View</button>
-            </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore case cards and patterns in emerging AI use." />
+  <title>Emergent Edge · Cases</title>
+  <link rel="stylesheet" href="./viz.css" />
+  <link rel="stylesheet" href="./map-cleanup.css" />
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <h1>Emergent Edge</h1>
+    <nav class="top-actions" aria-label="Main navigation">
+      <a class="btn" href="./index.html" aria-current="page">Cases</a>
+      <a class="btn" href="./pipeline.html">Pipeline</a>
+      <a class="btn" href="./about.html">About</a>
+    </nav>
+  </header>
+  <nav class="collection-links" aria-label="Collection">
+    <a href="./index.html" aria-current="page">Original collection</a>
+    <a href="./viz-v2.html" >Expanded collection</a>
+  </nav>
+  <main>
+    <section class="layout">
+      <article class="panel chart-panel">
+        <div class="panel-head">
+          <h2>Cases</h2>
+          <div class="panel-actions">
+            <label>Color by <select id="colorBy" aria-label="Color by"><option value="pattern">Pattern</option><option value="liability">Recorded risk</option></select></label>
+            <label><input id="showPatterns" type="checkbox"  />Patterns</label>
+            <button id="resetZoomBtn" class="btn small-btn" type="button">Reset view</button>
           </div>
-          <svg id="caseSvg" viewBox="0 0 980 560"></svg>
-        </article>
-
-        <aside class="panel detail-panel" id="detailPanel">
-          <div class="empty">Click a case to inspect details and linked pattern card.</div>
-        </aside>
-      </section>
-
-      <section class="layout second-row">
-        <article class="panel legend-panel" id="mapGuide">
-          <h2>How To Read This Map</h2>
-        </article>
-
-        <article class="panel legend-panel" id="cardDrafts">
-          <h2>Draft General Case-Card Framing</h2>
-        </article>
-      </section>
-    </div>
-
-    <script src="./viz.js"></script>
-  </body>
+        </div>
+        <label class="mobile-case-picker">Case<select id="casePicker"><option>Loading…</option></select></label>
+        <svg id="caseSvg" viewBox="0 0 980 560" role="group" aria-label="Interactive case map"></svg>
+        <div id="patternLegend" role="group" aria-label="Highlight a pattern"></div>
+        <details id="mapGuide" class="map-help">
+          <summary>About this map</summary>
+          <p>Distances approximate similarity between the stored case descriptions. Colors show the saved pattern assignments. Stars show the stored pattern positions.</p>
+          <p>A shared pattern does not establish that every case meets its criteria. Case notes identify mismatches found during review.</p>
+        </details>
+      </article>
+      <aside class="panel detail-panel" id="detailPanel" aria-label="Selected case or pattern">
+        <p class="empty">Select a case or pattern.</p>
+      </aside>
+    </section>
+  </main>
+</div>
+<script src="./viz.js"></script>
+</body>
 </html>
