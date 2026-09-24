@@ -13,15 +13,11 @@
   <header class="topbar">
     <h1>Emergent Edge</h1>
     <nav class="top-actions" aria-label="Main navigation">
-      <a class="btn" href="./viz-v2.html" aria-current="page">Cases</a>
-      <a class="btn" href="./pipeline-v2.html">Pipeline</a>
+      <a class="btn" href="./index.html" aria-current="page">Cases</a>
+      <a class="btn" href="./pipeline.html">Pipeline</a>
       <a class="btn" href="./about.html">About</a>
     </nav>
   </header>
-  <nav class="collection-links" aria-label="Collection">
-    <a href="./index.html" >Original collection</a>
-    <a href="./viz-v2.html" aria-current="page">Expanded collection</a>
-  </nav>
   <main>
     <section class="layout">
       <article class="panel chart-panel">
@@ -29,7 +25,7 @@
           <h2>Cases</h2>
           <div class="panel-actions">
             <label>Color by <select id="colorBy" aria-label="Color by"><option value="pattern">Pattern</option><option value="liability">Recorded risk</option></select></label>
-            <label><input id="showPatterns" type="checkbox" checked />Patterns</label>
+            <label><input id="showPatterns" type="checkbox"  />Patterns</label>
             <button id="resetZoomBtn" class="btn small-btn" type="button">Reset view</button>
           </div>
         </div>
@@ -38,7 +34,7 @@
         <div id="patternLegend" role="group" aria-label="Highlight a pattern"></div>
         <details id="mapGuide" class="map-help">
           <summary>About this map</summary>
-          <p>Distances approximate similarity between the stored case descriptions. Colors show the saved pattern assignments. Stars mark the centers of assigned case groups.</p>
+          <p>The map aligns two saved similarity layouts through their shared cases. Distances are approximate. Colors show recorded pattern assignments; stars mark the center of each pattern’s cases.</p>
           <p>A shared pattern does not establish that every case meets its criteria. Case notes identify mismatches found during review.</p>
         </details>
       </article>
@@ -48,6 +44,6 @@
     </section>
   </main>
 </div>
-<script src="./viz-v2.js"></script>
+<script src="./viz.js"></script>
 </body>
 </html>

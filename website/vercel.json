@@ -9,20 +9,8 @@
       "destination": "/pipeline.html"
     },
     {
-      "source": "/pipeline-v2",
-      "destination": "/pipeline-v2.html"
-    },
-    {
       "source": "/viz",
       "destination": "/viz.html"
-    },
-    {
-      "source": "/viz-v2",
-      "destination": "/viz-v2.html"
-    },
-    {
-      "source": "/index-v2",
-      "destination": "/index-v2.html"
     },
     {
       "source": "/site/novelty-review/:path*",
@@ -51,12 +39,42 @@
   "redirects": [
     {
       "source": "/pipeline-v2-standalone.html",
-      "destination": "/pipeline-v2.html",
+      "destination": "/pipeline.html",
       "permanent": false
     },
     {
       "source": "/viz-v2-standalone.html",
-      "destination": "/viz-v2.html",
+      "destination": "/viz.html",
+      "permanent": false
+    },
+    {
+      "source": "/viz-v2.html",
+      "destination": "/viz.html",
+      "permanent": false
+    },
+    {
+      "source": "/index-v2.html",
+      "destination": "/index.html",
+      "permanent": false
+    },
+    {
+      "source": "/pipeline-v2.html",
+      "destination": "/pipeline.html",
+      "permanent": false
+    },
+    {
+      "source": "/viz-v2",
+      "destination": "/viz.html",
+      "permanent": false
+    },
+    {
+      "source": "/index-v2",
+      "destination": "/index.html",
+      "permanent": false
+    },
+    {
+      "source": "/pipeline-v2",
+      "destination": "/pipeline.html",
       "permanent": false
     }
   ]

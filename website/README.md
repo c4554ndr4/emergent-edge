@@ -4,10 +4,12 @@
 
 [Explore the cases](https://emergent-edge-case-ai-use-detector.vercel.app/) · [Follow a sample](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline.html) · [About the project](https://emergent-edge-case-ai-use-detector.vercel.app/about.html)
 
-The site opens on the original collection of 30 cases and 12 patterns. The expanded collection contains 51 cases and 10 patterns. They are separate research snapshots, with their original coordinates and assignments preserved.
+One collection brings together 71 case cards and 19 patterns. Repeated cases appear once. Select a case to read its summary, evidence, and linked pattern, or select a pattern to highlight its cases.
 
-Select a case to read its summary, evidence, and linked pattern. Pattern labels highlight their cases. The walkthrough follows a selected example through its source, case card, retrieved comparisons, and recorded pattern decision. Prompts and full outputs remain available in expandable sections. These are saved research results; the site does not make live model calls.
+The walkthrough contains 34 saved recordings covering 33 cases. It follows the source, extracted case card, retrieved comparisons, and recorded pattern decision. Each recording retains its own prompts and batch context. One case has two recordings, both available in the sample selector. The site does not make live model calls.
 
-Short titles, pattern descriptions, and review notes live in `public/data/display_content.json`, separately from the original research data. Notes identify questionable assignments and distinguish reported experiences, research demonstrations, and defensive proposals. Missing extraction fields are not filled with invented descriptions. Editorial copy does not alter embedding coordinates, saved judgments, or the underlying model outputs.
+The combined map aligns the two saved layouts using their ten shared cases. This is an approximate display alignment, not a newly computed embedding projection or a quantitative measure of distance between the research runs. Pattern stars sit at the center of their displayed cases. Original files and alternate case analyses remain available; combining the views does not rerun the judges or change their decisions.
 
-Serve `public/` for a local preview. The public deployment uses `vercel.json`. Historical standalone URLs redirect to the corresponding working views.
+Short titles, pattern descriptions, and review notes live in `public/data/display_content.json`. Notes identify questionable assignments and distinguish reported experiences, research demonstrations, and defensive proposals.
+
+Run `python3 scripts/combine_collections.py` to rebuild the combined data from the saved public snapshots. Serve `public/` for a local preview. The deployment uses `vercel.json`; older collection URLs lead to the unified explorer.

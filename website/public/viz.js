@@ -1,7 +1,6 @@
-const DATA_PATH = "./data/case_graph_data.json";
-const DEMO_PATH = "./data/pipeline_demo_data.json";
+const DATA_PATH = "./data/case_graph_combined.json";
+const DEMO_PATH = "./data/pipeline_demo_combined.json";
 const PIPELINE_PAGE = "pipeline.html";
-const EXPANDED = false;
 const els = {svg: document.getElementById("caseSvg"), detail: document.getElementById("detailPanel"), mapGuide: document.getElementById("mapGuide"), legend: document.getElementById("patternLegend"), colorBy: document.getElementById("colorBy"), showPatterns: document.getElementById("showPatterns"), resetZoom: document.getElementById("resetZoomBtn")};
 const state = {data:null, display:{}, demoIds:new Set(), selected:null, pattern:null, hovered:null, labels:[], zoom:{scale:1,tx:0,ty:0}};
 const LIABILITY_COLORS = {
@@ -170,7 +169,7 @@ function renderDetail(c) {
   if (document.getElementById("casePicker")) document.getElementById("casePicker").value = c.case_id;
   const quotes=[...new Set((c.evidence_spans || []).map(e=>e.quote).filter(Boolean))].slice(0,3);
   const url=safeUrl(c.source_url);
-  const recorded={reviewed_mechanism:d.mechanism,reviewed_outcome:d.outcome,assignment_score:c.predicted_pattern_score, retrieval_hits:c.top_patterns, source_id:c.source_id, ai_written:{extent:c.llm_written_extent,verdict:c.llm_written_verdict,confidence:c.llm_written_confidence},core_dimensions:c.core_dimensions,impact_pathways:c.impact_pathways,provider_liability_assessment:c.provider_liability_assessment,decision_closest_pattern:c.decision_closest_pattern,decision_suspected_pattern:c.decision_suspected_pattern};
+  const recorded={reviewed_mechanism:d.mechanism,reviewed_outcome:d.outcome,assignment_score:c.predicted_pattern_score, retrieval_hits:c.top_patterns, source_id:c.source_id, ai_written:{extent:c.llm_written_extent,verdict:c.llm_written_verdict,confidence:c.llm_written_confidence},core_dimensions:c.core_dimensions,impact_pathways:c.impact_pathways,provider_liability_assessment:c.provider_liability_assessment,decision_closest_pattern:c.decision_closest_pattern,decision_suspected_pattern:c.decision_suspected_pattern,other_recorded_versions:c.other_recorded_versions};
   if(!Object.values(recorded.ai_written).some(v=>v!=null))delete recorded.ai_written;
   els.detail.innerHTML=`<p class="detail-eyebrow">Case${d.source_type ? " · "+esc(d.source_type):""}</p><h2>${esc(caseTitle(c))}</h2>    <div class="detail-links">${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open source ↗</a>`:""}${state.demoIds.has(c.case_id) ? `<a href="${PIPELINE_PAGE}?case=${encodeURIComponent(c.case_id)}">View pipeline example →</a>`:""}</div><p>${esc(d.summary || c.summary)}</p>
     ${d.notes ? `<p class="small"><strong>Review note:</strong> ${esc(prose(d.notes))}</p>`:""}
@@ -222,9 +221,9 @@ function render() {
     label(px+11,py+4,patternTitle(id),`pattern:${id}`,()=>state.pattern===id||state.hovered===`pattern:${id}`,dim);
   }
   for(const c of state.data.cases){const cx=xMap(c.x),cy=yMap(c.y),sel=state.selected?.case_id===c.case_id,dim=!!state.pattern&&c.predicted_pattern_id!==state.pattern;
-    const node=make("circle",{cx,cy,r:sel?8.8:EXPANDED?6.8:7,fill:colorForCase(c),stroke:sel?"#f8fafc":"#dbeafe","stroke-width":sel?2.5:EXPANDED?1.6:1.8,class:"node",opacity:dim?0.18:1});
+    const node=make("circle",{cx,cy,r:sel?8.8:7,fill:colorForCase(c),stroke:sel?"#f8fafc":"#dbeafe","stroke-width":sel?2.5:1.8,class:"node",opacity:dim?0.18:1});
     interactive(node,caseTitle(c),c.case_id,()=>{state.selected=c;state.pattern=null;const url=new URL(location.href);url.searchParams.set("case",c.case_id);history.replaceState(null,"",url);renderDetail(c);render();});view.append(node);
-    label(cx+(EXPANDED?8:9),cy-(EXPANDED?7:8),caseTitle(c),c.case_id,()=>state.hovered===c.case_id||(!dim&&sel),dim);
+    label(cx+9,cy-8,caseTitle(c),c.case_id,()=>state.hovered===c.case_id||(!dim&&sel),dim);
   }
   wireZoom(view); renderLegend();
   if(focusKey)els.svg.querySelector(`[data-key="${CSS.escape(focusKey)}"]`)?.focus();

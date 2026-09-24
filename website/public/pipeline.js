@@ -1,13 +1,12 @@
 (() => {
   "use strict";
-  const expanded = window.pipelineCollection === "expanded";
-  const dataURL = expanded ? "./data/pipeline_demo_data_v2.json" : "./data/pipeline_demo_data.json";
-  const mapURL = expanded ? "./viz-v2.html" : "./viz.html";
+  const dataURL = "./data/pipeline_demo_combined.json";
+  const mapURL = "./viz.html";
   const select = document.getElementById("sampleSelect");
   const stages = document.getElementById("walkthrough");
   let data;
   let graph = { cases: [] };
-  let otherGraph = { cases: [] };
+  let recording = {};
   let display = { cases: {}, patterns: {} };
   const pretty = value => typeof value === "string" ? value : JSON.stringify(value, null, 2);
   const human = value => String(value || "").replaceAll("_", " ");
@@ -44,14 +43,15 @@
   const patternCopy = id => display.patterns?.[id] || {};
   const caseTitle = sample => caseCopy(sample.case_id).title || sample.title || sample.case_id;
   const patternTitle = pattern => patternCopy(pattern?.pattern_id).title || human(pattern?.label || pattern?.pattern_id);
-  function patternById(id) { return (data.patterns || []).find(pattern => pattern.pattern_id === id); }
+  function patternById(id) { return (recording.patterns || []).find(pattern => pattern.pattern_id === id) || graph.patterns?.[id]; }
   function render(sample, updateURL = true) {
+    recording = data.recordings[sample.recording_id] || {};
     const card = sample.case_card || {};
     const copy = caseCopy(sample.case_id);
     const decision = sample.novelty_decision || {};
-    const prompts = data.prompts || {};
+    const prompts = recording.prompts || {};
     stages.replaceChildren();
-    select.value = sample.case_id;
+    select.value = `${sample.recording_id}:${sample.case_id}`;
     document.getElementById("selectedTitle").textContent = caseTitle(sample);
     const source = document.getElementById("openSampleSource");
     const sourceURL = safeURL(sample.source_url || card.source_url);
@@ -60,13 +60,13 @@
     else source.removeAttribute("href");
     const mapLink = document.getElementById("viewMap");
     const mapContainsCase = graph.cases?.some(c=>c.case_id===sample.case_id);
-    const alternateContainsCase = otherGraph.cases?.some(c=>c.case_id===sample.case_id);
-    mapLink.hidden = !mapContainsCase && !alternateContainsCase;
-    if (!mapLink.hidden) mapLink.href = `${mapContainsCase ? mapURL : (expanded ? "./viz.html" : "./viz-v2.html")}?case=${encodeURIComponent(sample.case_id)}`;
+    mapLink.hidden = !mapContainsCase;
+    if (!mapLink.hidden) mapLink.href = `${mapURL}?case=${encodeURIComponent(sample.case_id)}`;
     else mapLink.removeAttribute("href");
     if (updateURL) {
       const url = new URL(location.href);
       url.searchParams.set("case", sample.case_id);
+      url.searchParams.set("recording", sample.recording_id);
       history.replaceState(null, "", url);
     }
 
@@ -80,8 +80,8 @@
     raw(sourceSection, "Recorded source assessments", sample.risk_gate || sample.curator ? { risk_gate: sample.risk_gate, curator: sample.curator } : null);
     const batch = node("details", null, "raw-block");
     batch.append(node("summary", "Recorded batch context"));
-    raw(batch, "Exa criteria", data.exa?.criteria_template || prompts.exa_search_families || prompts.exa_criteria);
-    const results = data.run?.results || data.exa?.results || [];
+    raw(batch, "Exa criteria", recording.exa?.criteria_template || prompts.exa_search_families || prompts.exa_criteria);
+    const results = recording.run?.results || recording.exa?.results || [];
     const resultDetails = node("details", null, "raw-block");
     resultDetails.append(node("summary", "Exa results"));
     const resultList = node("ul", null, "recorded-list");
@@ -98,11 +98,11 @@
     resultDetails.append(resultList);
     raw(resultDetails, "Results JSON", results);
     batch.append(resultDetails);
-    raw(batch, "Source report", data.run?.source_report);
+    raw(batch, "Source report", recording.run?.source_report);
     raw(batch, "Gate prompt", prompts.risk_gate);
-    raw(batch, "Gate report", data.run?.gate_report);
+    raw(batch, "Gate report", recording.run?.gate_report);
     raw(batch, "Curator prompt", prompts.case_worthiness_curator);
-    raw(batch, "Curator report", data.run?.curator_report);
+    raw(batch, "Curator report", recording.run?.curator_report);
     sourceSection.append(batch);
 
     const caseSection = section("2. Case card");
@@ -123,14 +123,14 @@
     const retrieval = sample.novelty_input_bundle?.retrieval || {};
     const caseHits = retrieval.case_hits || [];
     const ids = [...new Set([...caseHits.map(hit => hit.id || hit.case_id), ...(decision.supporting_case_ids || [])])].filter(id => id && id !== sample.case_id);
-    const availableIds = ids.filter(id => graph.cases?.some(c=>c.case_id===id) || otherGraph.cases?.some(c=>c.case_id===id));
+    const availableIds = ids.filter(id => graph.cases?.some(c=>c.case_id===id));
     if (availableIds.length) {
       const list = node("ul", null, "recorded-list");
       availableIds.forEach(id => {
-        const related = data.samples.find(item => item.case_id === id) || graph.cases?.find(item => item.case_id === id) || otherGraph.cases?.find(item => item.case_id === id);
+        const related = data.samples.find(item => item.case_id === id) || graph.cases?.find(item => item.case_id === id);
         const li = node("li");
         const link = node("a", caseCopy(id).title || (related ? caseTitle(related) : id));
-        const destination = graph.cases?.some(c=>c.case_id===id) ? mapURL : (expanded ? "./viz.html" : "./viz-v2.html");
+        const destination = mapURL;
         link.href = `${destination}?case=${encodeURIComponent(id)}`;
         li.append(link);
         list.append(li);
@@ -180,31 +180,32 @@
     raw(decisionSection, "Additional analysis", sample.ai_written_judge_bonus || sample.origin_gate_pre);
   }
   async function load() {
-    const [response, overrides, mapData, alternateData] = await Promise.all([
+    const [response, overrides, mapData] = await Promise.all([
       fetch(dataURL),
       fetch("./data/display_content.json").then(res => res.ok ? res.json() : {}).catch(() => ({})),
-      fetch(expanded ? "./data/case_graph_data_v2.json" : "./data/case_graph_data.json").then(res => res.ok ? res.json() : {}).catch(() => ({})),
-      fetch(expanded ? "./data/case_graph_data.json" : "./data/case_graph_data_v2.json").then(res => res.ok ? res.json() : {}).catch(() => ({})),
+      fetch("./data/case_graph_combined.json").then(res => res.ok ? res.json() : {}).catch(() => ({})),
     ]);
     if (!response.ok) throw new Error("Saved walkthrough unavailable.");
     data = await response.json();
     display = overrides || display;
     graph = mapData || graph;
-    otherGraph = alternateData || otherGraph;
     if (!data.samples?.length) throw new Error("No recorded samples available.");
     select.replaceChildren();
     data.samples.forEach(sample => {
-      const option = node("option", caseTitle(sample));
-      option.value = sample.case_id;
+      const repeated = data.samples.filter(item => item.case_id === sample.case_id).length > 1;
+      const option = node("option", caseTitle(sample) + (repeated ? ` · recording ${sample.recording_id}` : ""));
+      option.value = `${sample.recording_id}:${sample.case_id}`;
       select.append(option);
     });
     select.disabled = false;
-    const requested = new URLSearchParams(location.search).get("case");
-    render(data.samples.find(sample => sample.case_id === requested) || data.samples[0]);
-    select.addEventListener("change", () => render(data.samples.find(sample => sample.case_id === select.value) || data.samples[0]));
+    const requestedSample = () => {
+      const params = new URLSearchParams(location.search);
+      return data.samples.find(sample => sample.case_id === params.get("case") && (!params.get("recording") || sample.recording_id === params.get("recording"))) || data.samples[0];
+    };
+    render(requestedSample());
+    select.addEventListener("change", () => render(data.samples.find(sample => `${sample.recording_id}:${sample.case_id}` === select.value) || data.samples[0]));
     window.addEventListener("popstate", () => {
-      const id = new URLSearchParams(location.search).get("case");
-      render(data.samples.find(sample => sample.case_id === id) || data.samples[0], false);
+      render(requestedSample(), false);
     });
   }
   load().catch(error => {
