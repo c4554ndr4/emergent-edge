@@ -1,45 +1,9 @@
-(AI-assisted writeup)
-
-My github projects are presented with AI-assisted writing that I've reviewed. If you would like to check out my fully-human thoughts on my projects, please see my personal website [cassie.mccoy.world](https://cassie.mccoy.world)
-
 # Emergent Edge
 
-**[Explore the case clusters](https://emergent-edge-case-ai-use-detector.vercel.app/viz-v2.html)** · [Interactive sample flow](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline.html) · [Daily-run walkthrough](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline-v2.html)
+Emergent edge is a pipeline that sources new edge-case user behavior from reddit and personal blogs. It's important for frontier labs to understand how their models are being used because sometimes model spec violations are not easy to detect using aggregate statistics over production data or other internal methods. For example, the GPT4o spiralism phenomenon proliferated on reddit before OpenAI caught wind and addressed it. This project sources posts that also bring up interesting questions about how the model should behave in certain situations. Example patterns I detected include users being distressed about AI dependency on the My Boyfriend is AI subreddit and individuals writing blog posts about tool injection attacks that they surfaced. 
 
-**An evidence-based research pipeline for edge-case user behavior in AI interactions.**
+I sourced candidates using various Exa searches with prompts requesting content from AI users, paying particular attention to reports of harmful interactions, and then filtered those results with a judge that classified harm and novelty levels. I then built case cards with a predefined format that summarized the article and had key quotes. Because these cards were structured similarly, cosine similarity analysis proved useful, correctly identifying articles that were semantically similar and with similar AI behavior (verified via manual inspection). I used another model to build pattern cards once I had a sufficiently sized cluster of case cards. Then, when new case cards came in, I would match them use a small judge to verify that they matched the pattern card.
 
-When people use an AI system in an unexpected way, a familiar label can hide what is actually happening. Emergent Edge turns interaction reports into structured evidence, compares them with known patterns, and asks whether a case is familiar, a variation, or a candidate for a new pattern.
+You can explore the site [here](https://emergent-edge-case-ai-use-detector.vercel.app/viz.html). The case cards tab lets you explore the case cards themselves, and the pipeline demo tab allows you to go through the process of reddit post sourcing to pattern card creation, seeing what each judge does in the process.
 
-The unit of analysis is the interaction: what someone asked for, how the system responded, and what consequences the source reports. Uncommon language, attachment, or community membership does not establish harm. The pipeline supports review of edge-case behavior; it does not diagnose or rank people.
-
-## Explore the original site
-
-The site retains the original interactive sample flow and semantic maps. The [expanded map](https://emergent-edge-case-ai-use-detector.vercel.app/viz-v2.html) places 51 case cards in semantic space, with 10 pattern stars at their cluster centers. Select a case to inspect its evidence and linked pattern, change the coloring, or pan and zoom. The [sample flow](https://emergent-edge-case-ai-use-detector.vercel.app/pipeline.html) lets you inspect recorded inputs, prompts, and outputs stage by stage.
-
-The layout, coordinates, and assignments are preserved from the original site. Provider and product references have been omitted. These are recorded research artifacts, not a live evaluation or independently verified incident count.
-
-## Follow one report through the system
-
-A researcher supplies a report. An extraction agent builds a **case card** containing the behavior, context, and evidence. Retrieval brings back similar case cards and a small library of **pattern cards**, each with required evidence and examples of what would not qualify.
-
-A first model pass proposes a match. Ambiguous cases receive a more detailed judgment. A deterministic policy checks the judgment against the available evidence. If the judge needs more context, the pipeline makes one bounded retry and preserves any unresolved request. Proposed patterns remain available for human review; automatic promotion is off by default.
-
-![Two differently worded reports can describe the same mechanism. Evidence requirements decide whether the comparison supports an existing pattern; missing evidence remains uncertainty.](docs/project-idea.png)
-
-*Illustrative comparison. The figure explains the evidence boundary; it is not a measured classification result.*
-
-For example, a report that an assistant followed instructions inside an imported document can be compared with earlier cases of source material being mistaken for user intent. A new vocabulary alone should not make it a new mechanism. Conversely, shared vocabulary should not force two different mechanisms into the same category.
-
-## What a reviewer can inspect
-
-Each run produces case cards, novelty decisions, and pattern proposals. The judgment includes the closest comparison, shared features, differentiating evidence, a counterargument, confidence, and any missing context. Retrieval helps select comparisons; similarity is not treated as proof.
-
-The architecture separates evidence extraction, retrieval, model judgment, and policy so each can be evaluated and improved independently. Reports can be processed concurrently, while saved artifacts retain the reasoning needed for later review.
-
-The pipeline examples are fictional and include an offline demonstration. The website separately preserves the original recorded sample flows, case cards, and pattern assignments; it is not a rendering of the fictional offline demonstration. The offline model and embedding fixtures exercise the workflow; their outputs are **not measurements of model quality**. Live analysis requires explicitly configured endpoints and models. Optional source-origin and relevance gates are disabled by default because they can exclude useful reports or introduce unsupported assumptions.
-
-## What I would improve next
-
-The strongest part of this project is the separation between a plausible model interpretation and the evidence required to accept it. The next improvements are independent annotation of comparison cases, calibrated uncertainty, clearer reporting when a model step falls back to a heuristic, and checkpoints that let interrupted batches resume. Seed patterns are research hypotheses and need validation outside the examples used to develop them.
-
-Start with the [development guide](DEVELOPMENT.md) for the fictional demo, endpoint contract, and tests. See [data and contribution guidance](CONTRIBUTING.md) before adding examples. Released under the [MIT license](LICENSE).
+This detector is meant to be run continuously, though the site only shows an example initial sourcing round. I tuned each judge step to use the lowest model intelligence necessary, while retrying with a stronger model in the case of uncertainly to keep continuous processing as inexpensive as possible. 
